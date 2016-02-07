@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-08-17T16:14:03 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TabellenStruckturReport_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fe16587c-e8d2-4e62-a852-0c7020563483">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value="IlFTWVMyIi4iU1lTQ09MVU1OUyIgLDI2LDEwLDliMzg3OTNlLWJmOGEtNDM5ZC1hYjEyLTQ3MjJk&#xA;YWRhMjczMTsiUVNZUyIuIlFBREJLRkxEIiAsMzE3LDExLGExMTEwNzI2LTZlZDgtNDliMS1iOTE1&#xA;LWRhMDVkZDkzYzc3Mjs="/>
+	<parameter name="SchemaName" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="SchemaBeschreibung" class="java.lang.String"/>
+	<parameter name="TabellenName" class="java.lang.String"/>
+	<parameter name="TabellenBeschreibung" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT "QSYS"."QADBKFLD"."DBKPOS",
+	"QSYS"."QADBKFLD"."DBKORD",
+	"QSYS2"."SYSCOLUMNS"."COLUMN_NAME",
+	"QSYS2"."SYSCOLUMNS"."DATA_TYPE",
+	"QSYS2"."SYSCOLUMNS"."LENGTH",
+	"QSYS2"."SYSCOLUMNS"."NUMERIC_SCALE",
+	"QSYS2"."SYSCOLUMNS"."COLUMN_HEADING",
+	"QSYS2"."SYSCOLUMNS"."TABLE_NAME"
+FROM "QSYS"."QADBKFLD"
+	RIGHT OUTER JOIN "QSYS2"."SYSCOLUMNS" ON 
+	 "QSYS2"."SYSCOLUMNS"."COLUMN_NAME" = "QSYS"."QADBKFLD"."DBKFLD" 
+	 AND "QSYS"."QADBKFLD"."DBKFIL" = "QSYS2"."SYSCOLUMNS"."TABLE_NAME" 
+WHERE 
+	 "QSYS2"."SYSCOLUMNS"."TABLE_NAME" = 'BDBE0401']]>
+	</queryString>
+	<field name="COLUMN_NAME" class="java.lang.String"/>
+	<field name="DATA_TYPE" class="java.lang.String"/>
+	<field name="LENGTH" class="java.lang.Integer"/>
+	<field name="NUMERIC_SCALE" class="java.lang.Integer"/>
+	<field name="COLUMN_HEADING" class="java.lang.String"/>
+	<field name="DBKPOS" class="java.lang.Integer"/>
+	<field name="DBKORD" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="114" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="30" uuid="e9c80211-4b8f-4db0-a879-8f08dfc2c9be"/>
+				<textElement>
+					<font size="22"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SchemaName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="0" width="460" height="30" uuid="ed68fe29-8810-4413-91c5-6ab3222c503e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SchemaBeschreibung}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="140" height="30" uuid="f63cbab1-7e86-4b6d-a5b8-e210720179a5"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TabellenName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="70" width="550" height="30" uuid="1cdd99d0-7e26-4185-9fd8-0aa0afee7265"/>
+				<textElement verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TabellenBeschreibung}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="8" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="ab5fc26c-668f-4b66-8777-70bccb8a3c58"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Feldname]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="100" height="20" uuid="d9b998fa-8071-4508-aa2d-a26ac0d20b3e"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Feld Typ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="20" uuid="8388936b-2e7b-4001-995a-9d0ecca1f4cf"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Länge]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="100" height="20" uuid="b0cefe90-e7fd-44db-a75b-8a0b8a3bfbd4"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Dezimal]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="30" width="550" height="1" uuid="fb96ee41-63c9-42ac-8a7a-51ae0fa69f7f"/>
+			</line>
+			<staticText>
+				<reportElement x="400" y="0" width="70" height="20" uuid="1f19d059-4e77-4995-bf57-865ebc46c8e4"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Keyfolge]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="0" width="70" height="20" uuid="3f0c33ec-347b-472d-8110-ae9a8d5c29a4"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Keyrichtung]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="545" height="20" uuid="b5a08e8d-1957-49ca-94ad-b5e7d3b33147"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COLUMN_HEADING}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="100" height="20" uuid="e63e6ed2-12f9-41ee-8139-99774c28a5a3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{COLUMN_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="20" width="100" height="20" uuid="06c19664-2cc2-4ffd-9046-4304fda41fc5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{DATA_TYPE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="20" width="100" height="20" uuid="7ee8e51f-1d3a-4ffa-9636-f74743bf6017"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{LENGTH}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="300" y="20" width="100" height="20" uuid="7e548f2d-87e2-44e1-bd84-5927cb99034a"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NUMERIC_SCALE}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="42" width="550" height="1" uuid="97dfb02e-d9f6-430a-a0b6-348fc7fda1f8"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="20" width="70" height="20" uuid="1657fdb4-de6d-4c13-8340-9b2502891c3d"/>
+				<textFieldExpression><![CDATA[$F{DBKPOS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="470" y="20" width="50" height="20" uuid="3de0b8e9-823d-4b5a-8e3a-1d0c1b62f79a"/>
+				<textFieldExpression><![CDATA[$F{DBKORD}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement x="350" y="0" width="100" height="30" uuid="53d07964-49dd-4296-8c4d-2104504444e6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="450" y="0" width="100" height="30" uuid="9d1eef8e-21f8-410f-a402-1db9cc3decb4"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="8" splitType="Stretch"/>
+	</summary>
+</jasperReport>

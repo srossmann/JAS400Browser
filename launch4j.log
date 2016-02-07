@@ -1,0 +1,30 @@
+
+
+Version:	3.8
+CmdLine:	C:\Daten\Entwicklung\Rossmann\Raspberrypi\Java\JAS400Browser\AS400Browser.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Daten\Entwicklung\Rossmann\Raspberrypi\Java\JAS400Browser\.
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7
+Ignore:		1.7
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7.0_79
+Ignore:		1.7.0_79
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8
+Ignore:		1.8
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8.0_45
+Check launcher:	C:\Program Files\Java\jre1.8.0_45\bin\javaw.exe (OK)
+Match:		1.8.0_45
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.7
+Ignore:		1.7
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.7.0_67
+Ignore:		1.7.0_67
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8
+Ignore:		1.8
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8.0_45
+Ignore:		1.8.0_45
+Runtime used:	1.8.0_45 (64-bit)
+Launcher:	C:\Program Files\Java\jre1.8.0_45\bin\javaw.exe
+Launcher args:	-jar "C:\Daten\Entwicklung\Rossmann\Raspberrypi\Java\JAS400Browser\AS400Browser.exe"
+Args length:	84/32768 chars
+Exit code:	0
