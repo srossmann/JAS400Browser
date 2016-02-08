@@ -315,7 +315,7 @@ public class AS400 {
 
             rs_data = getSQLResult(SQLStatement);
             
-            dtm = ConvertToMetaData(rs_data);
+            dtm =  ConvertToMetaData(rs_data);
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
         }

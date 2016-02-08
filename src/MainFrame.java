@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -320,7 +322,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         ));
         jTable3.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTable3.setCellSelectionEnabled(true);
+        jTable3.setSelectionBackground(new java.awt.Color(255, 255, 0));
         jTable3.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTable3FocusGained(evt);
+            }
+        });
         jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable3MouseClicked(evt);
@@ -331,6 +340,14 @@ public class MainFrame extends javax.swing.JFrame {
                 jTable3PropertyChange(evt);
             }
         });
+        jTable3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable3KeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTable3KeyTyped(evt);
+            }
+        });
         jScrollPane4.setViewportView(jTable3);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -338,7 +355,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
             .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
@@ -355,14 +372,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         jSplitPane3.setRightComponent(jSplitPane4);
 
-        jComboBox1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jComboBox1MouseClicked(evt);
-            }
-        });
+        jComboBox1.setBackground(new java.awt.Color(255, 204, 204));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
+            }
+        });
+        jComboBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jComboBox1MouseClicked(evt);
             }
         });
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -380,7 +398,9 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -405,8 +425,8 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(160, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -436,7 +456,9 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -605,7 +627,7 @@ public class MainFrame extends javax.swing.JFrame {
             int rowIdx = jTable3.rowAtPoint(evt.getPoint());
             Object obj = jTable3.getModel().getValueAt(rowIdx, colIdx);//This gets the value in the cells
             String str = obj.toString();//This converts that Value to String
-
+            System.out.println("Old Value = "+str);
             System.out.println("Row: " + rowIdx + " " + "Colulmn: " + colIdx);
         }
 //        else if (header.equals(e.getSource())) {
@@ -695,14 +717,11 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
         //myAS400.Datensatzbearbeiten(jTable3);
-        
-        
         try {
             myAS400.rs_data.absolute(2);
             myAS400.rs_data.updateString(4, "Hallo");
             myAS400.rs_data.updateRow();
-            
-            
+
 // TODO add your handling code here:
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -715,6 +734,24 @@ public class MainFrame extends javax.swing.JFrame {
     private void jTable3PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTable3PropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable3PropertyChange
+
+    private void jTable3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyPressed
+       int key = evt.getKeyCode();
+        if (key==13) {
+            
+        }
+        
+    }//GEN-LAST:event_jTable3KeyPressed
+
+    private void jTable3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyTyped
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_jTable3KeyTyped
+
+    private void jTable3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable3FocusGained
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jTable3FocusGained
 //***********************************1*******************************************
 //
 //
@@ -804,14 +841,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
         LadeGrid(s[1]);
     }
-    
 
 //******************************************************************************
 //
 //
 //
 //******************************************************************************
-
     public void LadeGrid(String Schema) {
         AS400Schemaname = Schema;
         DefaultTableModel lm;
@@ -852,6 +887,7 @@ public class MainFrame extends javax.swing.JFrame {
 //        JTableHeader header = jTable3.getTableHeader();
 //        header.addMouseListener(new TableHeaderMouseListener(jTable3));
 
+//        DefaultTableModel lm;
         DefaultTableModel lm;
         lm = myAS400.getTableData(AS400Schemaname, TabellenName, getFeldnamen(), jTextField1.getText(), jCheckBox1.isSelected());
 
@@ -866,13 +902,21 @@ public class MainFrame extends javax.swing.JFrame {
                         int x2 = evt.getFirstRow();
                         int x3 = evt.getLastRow();
                         int x4 = evt.getType();
-                        DefaultTableModel source = (DefaultTableModel)evt.getSource();
-                 //       source.fireTableDataChanged();
+                        String oldValue = (String) jTable3.getModel().getValueAt(x2, x1);
+                        System.out.println(oldValue);
+                        DefaultTableModel source = (DefaultTableModel) evt.getSource();
+                        String val = (String) source.getValueAt(x2, x1);
+                        System.out.println(val);
+                        //       source.fireTableDataChanged();
                     }
-                });
+                }
+        );
 
-       // lm.fireTableDataChanged();
-
+        
+        
+        
+        
+// lm.fireTableDataChanged();
         //jTable3.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
         //jTable3.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
         //TableColumn  tc =  jTable3.getTableHeader().getColumnModel().getColumn(1);

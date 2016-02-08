@@ -30,8 +30,11 @@ public class MyRenderer extends JLabel implements TableCellRenderer {
         setBackground(row % 2 == 0 ? Color.WHITE : Color.getHSBColor(255, 255, 159));
         setForeground(Color.BLACK);
         setText((value != null) ? value.toString() : "");
+        
         if (isSelected) {
+             
             setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            setBackground(Color.YELLOW);
         } else {
             setBorder(BorderFactory.createLineBorder(table.getBackground()));
         }
