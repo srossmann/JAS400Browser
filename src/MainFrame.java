@@ -1,4 +1,6 @@
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -10,19 +12,30 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.EventObject;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.plaf.basic.BasicListUI;
+import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 
 
 /*
@@ -41,6 +54,8 @@ public class MainFrame extends javax.swing.JFrame {
 //
 //******************************************************************************
 
+    myTable jTable3;
+            
     String AS400Schemaname = "";
     String AS400Tabellenname = "";
     String AS400User = "";
@@ -58,9 +73,6 @@ public class MainFrame extends javax.swing.JFrame {
 //******************************************************************************
     public MainFrame() {
         initComponents();
-
-        JTableHeader header1 = jTable3.getTableHeader();
-        header1.addMouseListener(new TableHeaderMouseListener(jTable3));
 
         JTableHeader header = jTable2.getTableHeader();
         header.addMouseListener(new TableHeaderMouseListenerChecket(jTable2));
@@ -120,6 +132,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -131,7 +144,6 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox();
@@ -178,21 +190,30 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jTextField2.setText("jTextField2");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -215,14 +236,14 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
         );
 
         jSplitPane4.setLeftComponent(jPanel1);
@@ -309,46 +330,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jScrollPane4.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane4.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jTable3.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        jTable3.setCellSelectionEnabled(true);
-        jTable3.setSelectionBackground(new java.awt.Color(255, 255, 0));
-        jTable3.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTable3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTable3FocusGained(evt);
-            }
-        });
-        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable3MouseClicked(evt);
-            }
-        });
-        jTable3.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jTable3PropertyChange(evt);
-            }
-        });
-        jTable3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTable3KeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTable3KeyTyped(evt);
-            }
-        });
-        jScrollPane4.setViewportView(jTable3);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -615,30 +596,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
-//******************************************************************************
-//
-//
-//
-//******************************************************************************
-    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
-        if (jTable3.equals(evt.getSource())) {
-
-            int colIdx = jTable3.columnAtPoint(evt.getPoint());
-            int rowIdx = jTable3.rowAtPoint(evt.getPoint());
-            Object obj = jTable3.getModel().getValueAt(rowIdx, colIdx);//This gets the value in the cells
-            String str = obj.toString();//This converts that Value to String
-            System.out.println("Old Value = "+str);
-            System.out.println("Row: " + rowIdx + " " + "Colulmn: " + colIdx);
-        }
-//        else if (header.equals(e.getSource())) {
-//
-//            int selectedColumnIdx = header.columnAtPoint(e.getPoint());
-//            String colName = table.getColumnName(header.columnAtPoint(e.getPoint()));
-//
-//            System.out.println("Column Name: " + colName);
-//            System.out.println("Selected Column: " + selectedColumnIdx);
-//        }
-    }//GEN-LAST:event_jTable3MouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         SpeicherParametrer();
@@ -730,28 +687,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
     }//GEN-LAST:event_jMenu1ActionPerformed
-
-    private void jTable3PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTable3PropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable3PropertyChange
-
-    private void jTable3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyPressed
-       int key = evt.getKeyCode();
-        if (key==13) {
-            
-        }
-        
-    }//GEN-LAST:event_jTable3KeyPressed
-
-    private void jTable3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyTyped
-        // TODO add your handling code here:
-       
-    }//GEN-LAST:event_jTable3KeyTyped
-
-    private void jTable3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable3FocusGained
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jTable3FocusGained
 //***********************************1*******************************************
 //
 //
@@ -854,7 +789,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTable1.setModel(lm);
         jTable1.setShowGrid(false);
-        jTable1.setDefaultRenderer(Object.class, new MyRenderer());
+        jTable1.setDefaultRenderer(Object.class, new MyRenderer(jTable1));
         TableDesign(jTable1);
 
     }
@@ -869,7 +804,7 @@ public class MainFrame extends javax.swing.JFrame {
         lm = myAS400.getTabellenStrucktur(AS400Schemaname, TabellenName);
 
         jTable2.setModel(lm);
-        jTable2.setDefaultRenderer(Object.class, new MyRenderer());
+        jTable2.setDefaultRenderer(Object.class,new MyRenderer(jTable2));
         //  jTable2.getColumnModel().getColumn(0).setCellRenderer(jTable2.getDefaultRenderer(Boolean.class));
 
         lm.fireTableDataChanged();
@@ -882,46 +817,14 @@ public class MainFrame extends javax.swing.JFrame {
 //******************************************************************************
 
     private void LadeTabellenDaten(String TabellenName) {
+            initmyDataTable();
 
         AS400Tabellenname = TabellenName;
-//        JTableHeader header = jTable3.getTableHeader();
-//        header.addMouseListener(new TableHeaderMouseListener(jTable3));
 
-//        DefaultTableModel lm;
         DefaultTableModel lm;
         lm = myAS400.getTableData(AS400Schemaname, TabellenName, getFeldnamen(), jTextField1.getText(), jCheckBox1.isSelected());
 
         jTable3.setModel(lm);
-        jTable3.setDefaultRenderer(Object.class, new MyRenderer());
-        //  jTable2.getColumnModel().getColumn(0).setCellRenderer(jTable2.getDefaultRenderer(Boolean.class));
-
-        jTable3.getModel().addTableModelListener(
-                new TableModelListener() {
-                    public void tableChanged(TableModelEvent evt) {
-                        int x1 = evt.getColumn();
-                        int x2 = evt.getFirstRow();
-                        int x3 = evt.getLastRow();
-                        int x4 = evt.getType();
-                        String oldValue = (String) jTable3.getModel().getValueAt(x2, x1);
-                        System.out.println(oldValue);
-                        DefaultTableModel source = (DefaultTableModel) evt.getSource();
-                        String val = (String) source.getValueAt(x2, x1);
-                        System.out.println(val);
-                        //       source.fireTableDataChanged();
-                    }
-                }
-        );
-
-        
-        
-        
-        
-// lm.fireTableDataChanged();
-        //jTable3.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
-        //jTable3.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
-        //TableColumn  tc =  jTable3.getTableHeader().getColumnModel().getColumn(1);
-        //jTable3.getTableHeader().getColumnModel().removeColumn(tc);
-        //jTable3.getTableHeader().getColumnModel().addColumn(tc);
     }
 //******************************************************************************
 //
@@ -995,6 +898,97 @@ public class MainFrame extends javax.swing.JFrame {
         SelectText = jTextField1.getText();
         LadeTabellenDaten(AS400Tabellenname);
     }
+
+    private void initmyDataTable() {
+        jTable3 = new myTable();
+
+        JTableHeader header1 = jTable3.getTableHeader();
+        header1.addMouseListener(new TableHeaderMouseListener(jTable3));
+        
+        jTable3.addXXXListener(new myTable.XXXListener() {
+
+            @Override
+            public void dispatchXXX(String e) {
+                jTextField2.setText(e);
+            
+            }
+        });
+                
+                
+                
+         jTable3.test123 = "";
+
+         jTable3.setDefaultRenderer(Object.class, new MyRenderer(jTable3));
+        //  jTable2.getColumnModel().getColumn(0).setCellRenderer(jTable2.getDefaultRenderer(Boolean.class));
+
+        jTable3.getModel().addTableModelListener(
+                new TableModelListener() {
+                    @Override
+                    public void tableChanged(TableModelEvent evt) {
+                        int x1 = evt.getColumn();
+                        int x2 = evt.getFirstRow();
+                        int x3 = evt.getLastRow();
+                        int x4 = evt.getType();
+                        String oldValue = (String) jTable3.getModel().getValueAt(x2, x1);
+                        System.out.println(oldValue);
+                        DefaultTableModel source = (DefaultTableModel) evt.getSource();
+                        String val = (String) source.getValueAt(x2, x1);
+                        System.out.println(val);
+                        //       source.fireTableDataChanged();
+                    }
+                }
+        );
+         
+        jTable3.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                String selectedData = null;
+
+                int[] selectedRow = jTable3.getSelectedRows();
+                int[] selectedColumns = jTable3.getSelectedColumns();
+
+                for (int i = 0; i < selectedRow.length; i++) {
+                    for (int j = 0; j < selectedColumns.length; j++) {
+                        selectedData = (String) jTable3.getValueAt(selectedRow[i], selectedColumns[j]);
+                    }
+                }
+                jLabel2.setText(selectedData);
+            }
+        });
+        
+        
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null}
+                },
+                new String[]{
+                    "Title 1", "Title 2", "Title 3", "Title 4"
+                }
+        ));
+        jTable3.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTable3.setCellEditor(new myTableCellEditor());
+        jTable3.setCellSelectionEnabled(true);
+        jTable3.setSelectionBackground(new java.awt.Color(255, 255, 0));
+        jTable3.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+//        jTable3.addFocusListener(new java.awt.event.FocusAdapter() {
+//            public void focusGained(java.awt.event.FocusEvent evt) {
+//                jTable3FocusGained(evt);
+//            }
+//        });
+//        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+//            public void mouseClicked(java.awt.event.MouseEvent evt) {
+//                jTable3MouseClicked(evt);
+//            }
+//        });
+        jScrollPane4.setViewportView(jTable3);
+    }
+
+
+     
 
     public class TableHeaderMouseListener extends MouseAdapter {
 
@@ -1097,8 +1091,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane4;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 
 }
