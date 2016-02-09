@@ -42,7 +42,7 @@ public class MyRenderer extends JLabel implements TableCellRenderer {
         
         if (isSelected) {
             setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            if (jTable3!=null) jTable3.fireXXX(value.toString());
+            //if (jTable3!=null) jTable3.fireXXX(value.toString());
             setBackground(Color.YELLOW);
         } else {
             setBorder(BorderFactory.createLineBorder(table.getBackground()));

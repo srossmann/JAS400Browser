@@ -1,6 +1,4 @@
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -12,30 +10,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.EventObject;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.plaf.basic.BasicListUI;
-import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
 
 
 /*
@@ -55,7 +40,7 @@ public class MainFrame extends javax.swing.JFrame {
 //******************************************************************************
 
     myTable jTable3;
-            
+
     String AS400Schemaname = "";
     String AS400Tabellenname = "";
     String AS400User = "";
@@ -804,7 +789,7 @@ public class MainFrame extends javax.swing.JFrame {
         lm = myAS400.getTabellenStrucktur(AS400Schemaname, TabellenName);
 
         jTable2.setModel(lm);
-        jTable2.setDefaultRenderer(Object.class,new MyRenderer(jTable2));
+        jTable2.setDefaultRenderer(Object.class, new MyRenderer(jTable2));
         //  jTable2.getColumnModel().getColumn(0).setCellRenderer(jTable2.getDefaultRenderer(Boolean.class));
 
         lm.fireTableDataChanged();
@@ -817,7 +802,7 @@ public class MainFrame extends javax.swing.JFrame {
 //******************************************************************************
 
     private void LadeTabellenDaten(String TabellenName) {
-            initmyDataTable();
+        initmyDataTable();
 
         AS400Tabellenname = TabellenName;
 
@@ -899,65 +884,19 @@ public class MainFrame extends javax.swing.JFrame {
         LadeTabellenDaten(AS400Tabellenname);
     }
 
+    private void SpeicherUpdate(DefaultTableModel tm) {
+        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        data = tm.getDataVector();
+        int maxCol = tm.getColumnCount();
+        for (int i = 0; i < maxCol; i++) {
+            String s = tm.getColumnName(i);
+            System.out.println("Name"+s);
+        }
+
+    }
+
     private void initmyDataTable() {
         jTable3 = new myTable();
-
-        JTableHeader header1 = jTable3.getTableHeader();
-        header1.addMouseListener(new TableHeaderMouseListener(jTable3));
-        
-        jTable3.addXXXListener(new myTable.XXXListener() {
-
-            @Override
-            public void dispatchXXX(String e) {
-                jTextField2.setText(e);
-            
-            }
-        });
-                
-                
-                
-         jTable3.test123 = "";
-
-         jTable3.setDefaultRenderer(Object.class, new MyRenderer(jTable3));
-        //  jTable2.getColumnModel().getColumn(0).setCellRenderer(jTable2.getDefaultRenderer(Boolean.class));
-
-        jTable3.getModel().addTableModelListener(
-                new TableModelListener() {
-                    @Override
-                    public void tableChanged(TableModelEvent evt) {
-                        int x1 = evt.getColumn();
-                        int x2 = evt.getFirstRow();
-                        int x3 = evt.getLastRow();
-                        int x4 = evt.getType();
-                        String oldValue = (String) jTable3.getModel().getValueAt(x2, x1);
-                        System.out.println(oldValue);
-                        DefaultTableModel source = (DefaultTableModel) evt.getSource();
-                        String val = (String) source.getValueAt(x2, x1);
-                        System.out.println(val);
-                        //       source.fireTableDataChanged();
-                    }
-                }
-        );
-         
-        jTable3.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                String selectedData = null;
-
-                int[] selectedRow = jTable3.getSelectedRows();
-                int[] selectedColumns = jTable3.getSelectedColumns();
-
-                for (int i = 0; i < selectedRow.length; i++) {
-                    for (int j = 0; j < selectedColumns.length; j++) {
-                        selectedData = (String) jTable3.getValueAt(selectedRow[i], selectedColumns[j]);
-                    }
-                }
-                jLabel2.setText(selectedData);
-            }
-        });
-        
-        
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
                     {null, null, null, null},
@@ -969,6 +908,74 @@ public class MainFrame extends javax.swing.JFrame {
                     "Title 1", "Title 2", "Title 3", "Title 4"
                 }
         ));
+        //jTable3.getColumnModel().getColumn(1).setCellEditor(new myTableCellEditor());
+        JTableHeader header1 = jTable3.getTableHeader();
+        header1.addMouseListener(new TableHeaderMouseListener(jTable3));
+
+        jTable3.getDefaultEditor(String.class).addCellEditorListener(
+                new CellEditorListener() {
+                    public void editingCanceled(ChangeEvent e) {
+                        System.out.println("editingCanceled");
+                    }
+
+                    public void editingStopped(ChangeEvent e) {
+                        //  jTable3.getModel().getValueAt(WIDTH, WIDTH)
+                        DefaultTableModel tm = (DefaultTableModel) jTable3.getModel();
+                        //Vector<Object> rowData = tm.getDataVector().elementAt(Rowindex);
+                        SpeicherUpdate(tm);
+                    }
+
+                });
+
+        jTable3.addXXXListener(new myTable.XXXListener() {
+
+            @Override
+            public void dispatchXXX(int row, int col, String e) {
+
+                jTextField2.setText(e);
+
+            }
+        });
+
+        jTable3.test123 = "";
+
+        jTable3.setDefaultRenderer(Object.class, new MyRenderer(jTable3));
+        //  jTable2.getColumnModel().getColumn(0).setCellRenderer(jTable2.getDefaultRenderer(Boolean.class));
+
+//        jTable3.getModel().addTableModelListener(
+//                new TableModelListener() {
+//                    @Override
+//                    public void tableChanged(TableModelEvent evt) {
+//                        int x1 = evt.getColumn();
+//                        int x2 = evt.getFirstRow();
+//                        int x3 = evt.getLastRow();
+//                        int x4 = evt.getType();
+//                        String oldValue = (String) jTable3.getModel().getValueAt(x2, x1);
+//                        System.out.println(oldValue);
+//                        DefaultTableModel source = (DefaultTableModel) evt.getSource();
+//                        String val = (String) source.getValueAt(x2, x1);
+//                        System.out.println(val);
+//                        //       source.fireTableDataChanged();
+//                    }
+//                }
+//        );
+//        jTable3.getSelectionModel().add   ListSelectionListener(new ListSelectionListener() {
+//
+//            @Override
+//            public void valueChanged(ListSelectionEvent e) {
+//                String selectedData = null;
+//
+//                int[] selectedRow = jTable3.getSelectedRows();
+//                int[] selectedColumns = jTable3.getSelectedColumns();
+//
+//                for (int i = 0; i < selectedRow.length; i++) {
+//                    for (int j = 0; j < selectedColumns.length; j++) {
+//                        selectedData = (String) jTable3.getValueAt(selectedRow[i], selectedColumns[j]);
+//                    }
+//                }
+//                //jLabel2.setText(selectedData);
+//            }
+//        });
         jTable3.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jTable3.setCellEditor(new myTableCellEditor());
         jTable3.setCellSelectionEnabled(true);
@@ -986,9 +993,6 @@ public class MainFrame extends javax.swing.JFrame {
 //        });
         jScrollPane4.setViewportView(jTable3);
     }
-
-
-     
 
     public class TableHeaderMouseListener extends MouseAdapter {
 
