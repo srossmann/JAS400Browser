@@ -11,11 +11,7 @@ public abstract class myTableModell extends DefaultTableModel {
         return true;
     }
 
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        Object oldValue = getValueAt(rowIndex, columnIndex);
-    }
-
+    
      
 
 }

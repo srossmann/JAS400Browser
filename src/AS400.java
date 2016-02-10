@@ -74,6 +74,9 @@ public class AS400 {
         } catch (Exception e) {
             rs = e.getMessage();
         }
+        if (rs.equals("Cursor state not valid.")) {
+            rs = "O.K.";
+        }
         return rs;
     }
     
