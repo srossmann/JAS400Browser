@@ -41,11 +41,17 @@ public class MainFrame extends javax.swing.JFrame {
 
     myTable jTable3;
 
+    int edtCol = 0;
+    int edtRow = 0;
+    String altValue = "";
+    String neuValue = "";
+
     String AS400Schemaname = "";
     String AS400Tabellenname = "";
     String AS400User = "";
     String AS400Passwort = "";
     String AS400IPAdresse = "";
+    TabellenStructurTableModell TabellenStrucktur;
 
     String SelectText = "";
 
@@ -117,7 +123,6 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -175,30 +180,21 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextField2.setText("jTextField2");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(42, 42, 42)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -785,14 +781,14 @@ public class MainFrame extends javax.swing.JFrame {
 //******************************************************************************
 
     private void LadeTabellenstrucktur(String TabellenName) {
-        TabellenStructurTableModell lm;
-        lm = myAS400.getTabellenStrucktur(AS400Schemaname, TabellenName);
+        //TabellenStructurTableModell lm;
+        TabellenStrucktur = myAS400.getTabellenStrucktur(AS400Schemaname, TabellenName);
 
-        jTable2.setModel(lm);
+        jTable2.setModel(TabellenStrucktur);
         jTable2.setDefaultRenderer(Object.class, new MyRenderer(jTable2));
         //  jTable2.getColumnModel().getColumn(0).setCellRenderer(jTable2.getDefaultRenderer(Boolean.class));
 
-        lm.fireTableDataChanged();
+        TabellenStrucktur.fireTableDataChanged();
 
     }
 //******************************************************************************
@@ -886,13 +882,49 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void SpeicherUpdate(DefaultTableModel tm) {
         Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        Vector<Vector<Object>> type = new Vector<Vector<Object>>();
         data = tm.getDataVector();
         int maxCol = tm.getColumnCount();
-        for (int i = 0; i < maxCol; i++) {
-            String s = tm.getColumnName(i);
-            System.out.println("Name"+s);
+               neuValue = data.get(edtRow).get(edtCol).toString();
+        type = TabellenStrucktur.getDataVector();
+        String FeldWert = " ";
+        String FeldName = " ";
+        if (type.get(edtCol).get(2).toString().equals("CHAR")) {
+            neuValue = "'"+neuValue.trim()+"'";
         }
+ 
+        String UpdateString = "Update "+AS400Schemaname+"/"+AS400Tabellenname+" SET "+tm.getColumnName(edtCol)+" = "+neuValue+" where ";
 
+       // System.out.println("alter Wert = "+tm.getColumnName(edtCol)+" = "+altValue);
+        for (int i = 0; i < maxCol; i++) {
+            FeldName = tm.getColumnName(i);
+            if (i==edtCol) {
+                FeldWert = altValue;
+            }else{
+                FeldWert = data.get(edtRow).get(i).toString();
+            }
+            String Type = type.get(i).get(2).toString();
+            if (Type.equals("CHAR")) {
+                if ("".equals(FeldWert.trim())) 
+                    FeldWert = "' '"; 
+                else    
+                    FeldWert = "'"+FeldWert.trim()+"'"; 
+            }
+            if (i==maxCol-1) 
+                UpdateString += FeldName+" = "+FeldWert;
+            else
+                UpdateString += FeldName+" = "+FeldWert+" and ";
+        }
+        
+        String error;
+        try {
+            error = myAS400.executeSQL(UpdateString);
+            System.out.println(error);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void initmyDataTable() {
@@ -928,69 +960,21 @@ public class MainFrame extends javax.swing.JFrame {
                 });
 
         jTable3.addXXXListener(new myTable.XXXListener() {
-
             @Override
             public void dispatchXXX(int row, int col, String e) {
-
-                jTextField2.setText(e);
-
+                edtCol = col;
+                edtRow = row;
+                altValue = e;
             }
         });
 
-        jTable3.test123 = "";
-
         jTable3.setDefaultRenderer(Object.class, new MyRenderer(jTable3));
-        //  jTable2.getColumnModel().getColumn(0).setCellRenderer(jTable2.getDefaultRenderer(Boolean.class));
-
-//        jTable3.getModel().addTableModelListener(
-//                new TableModelListener() {
-//                    @Override
-//                    public void tableChanged(TableModelEvent evt) {
-//                        int x1 = evt.getColumn();
-//                        int x2 = evt.getFirstRow();
-//                        int x3 = evt.getLastRow();
-//                        int x4 = evt.getType();
-//                        String oldValue = (String) jTable3.getModel().getValueAt(x2, x1);
-//                        System.out.println(oldValue);
-//                        DefaultTableModel source = (DefaultTableModel) evt.getSource();
-//                        String val = (String) source.getValueAt(x2, x1);
-//                        System.out.println(val);
-//                        //       source.fireTableDataChanged();
-//                    }
-//                }
-//        );
-//        jTable3.getSelectionModel().add   ListSelectionListener(new ListSelectionListener() {
-//
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//                String selectedData = null;
-//
-//                int[] selectedRow = jTable3.getSelectedRows();
-//                int[] selectedColumns = jTable3.getSelectedColumns();
-//
-//                for (int i = 0; i < selectedRow.length; i++) {
-//                    for (int j = 0; j < selectedColumns.length; j++) {
-//                        selectedData = (String) jTable3.getValueAt(selectedRow[i], selectedColumns[j]);
-//                    }
-//                }
-//                //jLabel2.setText(selectedData);
-//            }
-//        });
+        
         jTable3.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jTable3.setCellEditor(new myTableCellEditor());
         jTable3.setCellSelectionEnabled(true);
         jTable3.setSelectionBackground(new java.awt.Color(255, 255, 0));
         jTable3.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-//        jTable3.addFocusListener(new java.awt.event.FocusAdapter() {
-//            public void focusGained(java.awt.event.FocusEvent evt) {
-//                jTable3FocusGained(evt);
-//            }
-//        });
-//        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
-//            public void mouseClicked(java.awt.event.MouseEvent evt) {
-//                jTable3MouseClicked(evt);
-//            }
-//        });
         jScrollPane4.setViewportView(jTable3);
     }
 
@@ -1096,7 +1080,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 
 }

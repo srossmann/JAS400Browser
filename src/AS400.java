@@ -58,7 +58,25 @@ public class AS400 {
         }
         return true;
     }
+//******************************************************************************
+//
+//
+//
+//******************************************************************************
+    public String executeSQL(String SQLStatement) throws ClassNotFoundException, SQLException {
 
+        Statement st;
+        String rs = "";
+        try {
+            st = AS400Conn.createStatement();
+            st.executeQuery(SQLStatement);
+
+        } catch (Exception e) {
+            rs = e.getMessage();
+        }
+        return rs;
+    }
+    
 //******************************************************************************
 //
 //
