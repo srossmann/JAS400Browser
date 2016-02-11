@@ -1,5 +1,6 @@
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -575,6 +576,7 @@ public class MainFrame extends javax.swing.JFrame {
 //
 //******************************************************************************
     private void StartSchema() {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         ResultSet rs = myAS400.getSchema();
         try {
             while (rs.next()) {
@@ -588,6 +590,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         LadeParametrer();
         findSchema(AS400Schemaname);
+        this.setCursor(Cursor.getDefaultCursor());
         //  LadeGrid();
     }
 //******************************************************************************
@@ -749,7 +752,11 @@ public class MainFrame extends javax.swing.JFrame {
 //******************************************************************************
     private void speicherProtokoll() {
 
-        String Datei = saveAs("Test12345.txt");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd_mm_yyyy_HH_mm_ss");
+        String uhrzeit = sdf.format(new Date());
+
+        String Name = "Protokoll-"+AS400Schemaname+"-"+AS400Tabellenname+"-"+uhrzeit+".txt";
+        String Datei = saveAs(Name);
         Writer fw = null;
 
         try {
@@ -762,6 +769,7 @@ public class MainFrame extends javax.swing.JFrame {
                 fw.write(Zeile);
                 fw.append(System.getProperty("line.separator")); // e.g. "\n"
             }
+            lmodel.removeAllElements();
         } catch (IOException e) {
             System.err.println("Konnte Datei nicht erstellen");
         } finally {
@@ -773,6 +781,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         }
+                
 
     }
 
@@ -809,6 +818,7 @@ public class MainFrame extends javax.swing.JFrame {
         chooser.setFileFilter(plainFilter);
         //chooser.setFileFilter(markUpFilter);
         chooser.setDialogTitle("Speichern unter...");
+        chooser.setSelectedFile(new File(Dateiname));
         chooser.setVisible(true);
 
         int result = chooser.showSaveDialog(this);
@@ -915,6 +925,7 @@ public class MainFrame extends javax.swing.JFrame {
 //
 //******************************************************************************
     public void LadeGrid(String Schema) {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         LogInfo("Lade Bib = " + Schema);
         AS400Schemaname = Schema;
         DefaultTableModel lm;
@@ -924,7 +935,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTable1.setShowGrid(false);
         jTable1.setDefaultRenderer(Object.class, new MyRenderer(jTable1));
         TableDesign(jTable1);
-
+        this.setCursor(Cursor.getDefaultCursor());
     }
 //******************************************************************************
 //
@@ -934,6 +945,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void LadeTabellenstrucktur(String TabellenName) {
         //TabellenStructurTableModell lm;
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         TabellenStrucktur = myAS400.getTabellenStrucktur(AS400Schemaname, TabellenName);
 
         jTable2.setModel(TabellenStrucktur);
@@ -941,6 +953,7 @@ public class MainFrame extends javax.swing.JFrame {
         //  jTable2.getColumnModel().getColumn(0).setCellRenderer(jTable2.getDefaultRenderer(Boolean.class));
 
         TabellenStrucktur.fireTableDataChanged();
+        this.setCursor(Cursor.getDefaultCursor());
 
     }
 //******************************************************************************
@@ -951,7 +964,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void LadeTabellenDaten(String TabellenName) {
         initmyDataTable();
-
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         AS400Tabellenname = TabellenName;
 
         DefaultTableModel lm;
@@ -961,6 +974,7 @@ public class MainFrame extends javax.swing.JFrame {
         LogInfo(myAS400.ResulSQLStatement);
 
         jTable3.setModel(lm);
+        this.setCursor(Cursor.getDefaultCursor());
     }
 //******************************************************************************
 //
