@@ -41,6 +41,7 @@ public class AS400 {
 
     private Connection AS400Conn = null;
     public ResultSet rs_data = null;
+    public String ResulSQLStatement = "";
 //******************************************************************************
 //
 //
@@ -333,7 +334,8 @@ public class AS400 {
                     SQLStatement = String.format("SELECT " + FeldName + " FROM %S/%s   ", Schema.toUpperCase().trim(), Tabelle.toUpperCase().trim());
                 }
             }
-
+            
+            ResulSQLStatement = SQLStatement;
             rs_data = getSQLResult(SQLStatement);
             
             dtm =  ConvertToMetaData(rs_data);
