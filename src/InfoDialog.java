@@ -33,6 +33,8 @@ public class InfoDialog extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -48,19 +50,28 @@ public class InfoDialog extends javax.swing.JDialog {
             }
         });
 
+        jTextPane1.setText("In allen Lizenzen werden vier grundsätzliche Freiheiten genannt, die dem Anwender der Software gewährt werden.\n\nDie Software darf für beliebige Zwecke verwendet werden. Es besteht keinerlei Einschränkung wer und wofür dieser die Software einsetzt.\n\nDer Anwender darf den Quellcode studieren um herauszufinden, wie sie funktioniert. Das bedingt, dass der Quellcode mitgeliefert oder zumindest ein Hinweis für den Bezug der Quellen gegeben werden muss.\n\nDie Software darf uneingeschränkt an andere weitergegeben werden.\n\nDer Nutzer darf die Software verändern und verbessern und diese Änderungen veröffentlichen.\n\nInteressant für den Urheber sind die folgenden Punkte:\n\nDer Urheber der Software wird nicht für Schäden in Anspruch genommen, die durch den Einsatz seiner Software entstehen. In allen Lizenzen ist ein entsprechender Absatz enthalten, dass es keine Garantie für den korrekten Einsatz gibt.\n\nEs muss ein Hinweis auf den Urheber der Software angebracht werden. Dies schließt auch die evtl. kommerzielle Verwendung der Software ein.");
+        jScrollPane1.setViewportView(jTextPane1);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(267, Short.MAX_VALUE)
-                .addComponent(jButton1)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 255, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(224, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -129,5 +140,7 @@ public class InfoDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
 }

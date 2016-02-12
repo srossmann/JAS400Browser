@@ -42,6 +42,7 @@ public class AS400 {
     private Connection AS400Conn = null;
     public ResultSet rs_data = null;
     public String ResulSQLStatement = "";
+    public String error = "";
 //******************************************************************************
 //
 //
@@ -94,8 +95,9 @@ public class AS400 {
             st = AS400Conn.createStatement();
             rs = st.executeQuery(SQLStatement);
 
-        } catch (Exception e) {
-            System.exit(-1);
+        } catch (Exception ex) {
+            error = ex.getMessage();
+            Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
     }
@@ -337,8 +339,9 @@ public class AS400 {
             
             ResulSQLStatement = SQLStatement;
             rs_data = getSQLResult(SQLStatement);
-            
-            dtm =  ConvertToMetaData(rs_data);
+            if (rs_data!=null) {
+                dtm =  ConvertToMetaData(rs_data);
+            }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
         }

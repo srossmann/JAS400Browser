@@ -55,10 +55,10 @@ public class LoginDialog extends javax.swing.JDialog {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setBackground(javax.swing.UIManager.getDefaults().getColor("window"));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 255), 5, true));
 
-        jPasswordField1.setBackground(new java.awt.Color(0, 0, 0));
+        jPasswordField1.setBackground(new java.awt.Color(240, 240, 240));
         jPasswordField1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jPasswordField1.setForeground(new java.awt.Color(51, 255, 0));
         jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -67,7 +67,7 @@ public class LoginDialog extends javax.swing.JDialog {
             }
         });
 
-        jFormattedTextField1.setBackground(new java.awt.Color(0, 0, 0));
+        jFormattedTextField1.setBackground(new java.awt.Color(240, 240, 240));
         jFormattedTextField1.setForeground(new java.awt.Color(51, 255, 0));
         try {
             jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###.###")));
@@ -78,7 +78,7 @@ public class LoginDialog extends javax.swing.JDialog {
         jFormattedTextField1.setToolTipText("");
         jFormattedTextField1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
-        jTextField1.setBackground(new java.awt.Color(0, 0, 0));
+        jTextField1.setBackground(new java.awt.Color(240, 240, 240));
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(51, 255, 0));
         jTextField1.setText(" ");
@@ -93,15 +93,12 @@ public class LoginDialog extends javax.swing.JDialog {
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Username (AS400)");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Passwort (AS400)");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("IP-Adresse (AS400)");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

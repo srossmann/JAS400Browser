@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -25,6 +26,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -33,6 +35,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 
 
 /*
@@ -52,7 +56,8 @@ public class MainFrame extends javax.swing.JFrame {
 //******************************************************************************
 
     myTable jTable3;
-
+    java.awt.Frame myMainFrame;
+    
     int edtCol = 0;
     int edtRow = 0;
     String altValue = "";
@@ -77,7 +82,7 @@ public class MainFrame extends javax.swing.JFrame {
 //******************************************************************************
     public MainFrame() {
         initComponents();
-
+        myMainFrame = this;
         JTableHeader header = jTable2.getTableHeader();
         header.addMouseListener(new TableHeaderMouseListenerChecket(jTable2));
 
@@ -134,8 +139,8 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
-        jTextField2 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jSplitPane3 = new javax.swing.JSplitPane();
         jSplitPane4 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
@@ -175,17 +180,22 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel3.setText("Where");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel4.setText("Where");
+        jLabel4.setToolTipText("");
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jComboBox2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "=", ">", "<", "<>" }));
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jTextField2.setText("jTextField1");
-
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton2.setText("OK");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jFormattedTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jFormattedTextField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -194,30 +204,34 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jDialog1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jDialog1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jDialog1Layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jFormattedTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jDialog1Layout.setVerticalGroup(
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDialog1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFormattedTextField1))
+                .addGap(11, 11, 11)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -803,6 +817,11 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jToggleButton1MouseClicked
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        jDialog1.setVisible(false);
+        jDialog1.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 //******************************************************************************
 //
 //
@@ -813,7 +832,7 @@ public class MainFrame extends javax.swing.JFrame {
         SimpleDateFormat sdf = new SimpleDateFormat("dd_mm_yyyy_HH_mm_ss");
         String uhrzeit = sdf.format(new Date());
 
-        String Name = "Protokoll-"+AS400Schemaname+"-"+AS400Tabellenname+"-"+uhrzeit+".txt";
+        String Name = "Protokoll-" + AS400Schemaname + "-" + AS400Tabellenname + "-" + uhrzeit + ".txt";
         String Datei = saveAs(Name);
         Writer fw = null;
 
@@ -839,7 +858,6 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         }
-                
 
     }
 
@@ -941,7 +959,7 @@ public class MainFrame extends javax.swing.JFrame {
         LadeDatenTabelle();
     }
 
-    //******************************************************************************
+//******************************************************************************
 //
 //
 //
@@ -956,6 +974,65 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         return s;
+    }
+
+    private String getTypebeschreibung(String Feldname) {
+        String s1 = Feldname;
+        String s = "";
+        String value = Feldname.trim().toUpperCase();
+        for (int row = 0; row <= jTable2.getRowCount() - 1; row++) {
+            if (value.equals(jTable2.getValueAt(row, 1))) {
+                Integer len = (Integer) jTable2.getValueAt(row, 3);
+                Integer dec = (Integer) jTable2.getValueAt(row, 4);
+                s = jTable2.getValueAt(row, 2).toString();
+                if (dec==null) {
+                    s1 += " "+s+" "+len.toString();
+                }else{
+                    s1 += " "+s+" "+len.toString()+" "+dec.toString();
+                }
+
+            }
+        }
+
+        return s1;
+    }
+
+
+//******************************************************************************
+//
+//
+//
+//******************************************************************************
+
+    private String getFormat(String Feldname) {
+        String s1 = "";
+        String s = "";
+        String value = Feldname.trim().toUpperCase();
+        for (int row = 0; row <= jTable2.getRowCount() - 1; row++) {
+            if (value.equals(jTable2.getValueAt(row, 1))) {
+                s = jTable2.getValueAt(row, 2).toString();
+                if (s.equals("CHAR")) {
+                    Integer len = (Integer) jTable2.getValueAt(row, 3);
+                    for (int i = 0; i < len; i++) {
+                        s1 += "A";
+                    }
+                } else {
+                    Integer len = (Integer) jTable2.getValueAt(row, 3);
+                    Integer dec = (Integer) jTable2.getValueAt(row, 4);
+                    for (int i = 0; i < len-dec; i++) {
+                        s1 += "#";
+                    }
+                    if (dec == 0) {
+                    } else {
+                        s1 += ".";
+                        for (int i = 0; i < dec; i++) {
+                            s1 += "#";
+                        }
+                    }
+                }
+            }
+        }
+        return s1;
     }
 //******************************************************************************
 //
@@ -1028,10 +1105,12 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultTableModel lm;
 
         lm = myAS400.getTableData(AS400Schemaname, TabellenName, getFeldnamen(), jTextField1.getText(), jCheckBox1.isSelected());
-
-        LogInfo(myAS400.ResulSQLStatement);
-
-        jTable3.setModel(lm);
+        if (lm == null) {
+            LogInfo(myAS400.error);
+        } else {
+            LogInfo(myAS400.ResulSQLStatement);
+            jTable3.setModel(lm);
+        }
         this.setCursor(Cursor.getDefaultCursor());
     }
 //******************************************************************************
@@ -1169,18 +1248,6 @@ public class MainFrame extends javax.swing.JFrame {
         jTable3 = new myTable();
         jTable3.setEnabled(false);
 
-//        jTable3.setModel(new javax.swing.table.DefaultTableModel(
-        //                new Object[][]{
-        //                    {null, null, null, null},
-        //                    {null, null, null, null},
-        //                    {null, null, null, null},
-        //                    {null, null, null, null}
-        //                },
-        //                new String[]{
-        //                    "Title 1", "Title 2", "Title 3", "Title 4"
-        //                }
-        //        ));
-        //jTable3.getColumnModel().getColumn(1).setCellEditor(new myTableCellEditor());
         JTableHeader header1 = jTable3.getTableHeader();
         header1.addMouseListener(new TableHeaderMouseListener(jTable3));
 
@@ -1234,32 +1301,20 @@ public class MainFrame extends javax.swing.JFrame {
             int column = table.columnAtPoint(point);
             String name = table.getModel().getColumnName(column);
             String Type = findType(name).trim().toUpperCase();
-          
-            jDialog1.setSize(310,137);
-            jDialog1.setLocationRelativeTo(null);
-            jDialog1.setModal(true);
-            jDialog1.setVisible(true);
-            
-             
-            String wert = "0";
+
+            DialogDatenfeld  ddf = new DialogDatenfeld(myMainFrame,true);
+            ddf.setParameter(name,Type,getFormat(name),getTypebeschreibung(name));
+            ddf.setVisible(true);
             
             //String wert = JOptionPane.showInputDialog(name+" = ");
             if (SelectText.length() > 0) {
-                if (Type.equals("CHAR")) {
-                    SelectText = SelectText + " and " + name + " = '"+wert+"'";
-                } else {
-                    SelectText = SelectText + " and " + name + " = "+wert;
-                }
+                SelectText += " and "+ddf.getSQL();
             } else {
-                if (Type.equals("CHAR")) {
-                    SelectText = SelectText + name + " = '"+wert+"'";
-                } else {
-                    SelectText = SelectText + name + " = "+wert;
-                }
+                SelectText = ddf.getSQL();
             }
 
             jTextField1.setText(SelectText);
-            
+
             DatenNeuLaden();
         }
     }
@@ -1321,6 +1376,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1348,7 +1404,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 

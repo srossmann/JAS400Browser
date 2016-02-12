@@ -51,9 +51,15 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="267" max="32767" attributes="0"/>
-                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="255" max="32767" attributes="0"/>
+                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -61,7 +67,9 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="224" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" pref="204" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -80,6 +88,20 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
           </Events>
         </Component>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTextPane" name="jTextPane1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="In allen Lizenzen werden vier grunds&#xe4;tzliche Freiheiten genannt, die dem Anwender der Software gew&#xe4;hrt werden.&#xa;&#xa;Die Software darf f&#xfc;r beliebige Zwecke verwendet werden. Es besteht keinerlei Einschr&#xe4;nkung wer und wof&#xfc;r dieser die Software einsetzt.&#xa;&#xa;Der Anwender darf den Quellcode studieren um herauszufinden, wie sie funktioniert. Das bedingt, dass der Quellcode mitgeliefert oder zumindest ein Hinweis f&#xfc;r den Bezug der Quellen gegeben werden muss.&#xa;&#xa;Die Software darf uneingeschr&#xe4;nkt an andere weitergegeben werden.&#xa;&#xa;Der Nutzer darf die Software ver&#xe4;ndern und verbessern und diese &#xc4;nderungen ver&#xf6;ffentlichen.&#xa;&#xa;Interessant f&#xfc;r den Urheber sind die folgenden Punkte:&#xa;&#xa;Der Urheber der Software wird nicht f&#xfc;r Sch&#xe4;den in Anspruch genommen, die durch den Einsatz seiner Software entstehen. In allen Lizenzen ist ein entsprechender Absatz enthalten, dass es keine Garantie f&#xfc;r den korrekten Einsatz gibt.&#xa;&#xa;Es muss ein Hinweis auf den Urheber der Software angebracht werden. Dies schlie&#xdf;t auch die evtl. kommerzielle Verwendung der Software ein."/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
       </SubComponents>
     </Container>
   </SubComponents>
