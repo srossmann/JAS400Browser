@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Point;
@@ -155,7 +156,8 @@ public class MainFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
         jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -198,7 +200,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setText(" ");
         jLabel1.setToolTipText("");
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/printer.png"))); // NOI18N
         jButton4.setText("<html>Struktur<p>drucken</html>");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -225,7 +226,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/search.png"))); // NOI18N
         jButton2.setText("suchen");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -260,7 +260,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 220, Short.MAX_VALUE)))
                 .addGap(138, 138, 138))
         );
         jPanel2Layout.setVerticalGroup(
@@ -300,7 +300,10 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,7 +326,6 @@ public class MainFrame extends javax.swing.JFrame {
         jCheckBox1.setSelected(true);
         jCheckBox1.setText("max 100 Datensätze");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/recycle.png"))); // NOI18N
         jButton1.setText("<html>Datensätze<p>neu laden</html>");
         jButton1.setToolTipText("");
@@ -334,7 +336,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/edit.png"))); // NOI18N
         jToggleButton1.setText("<html>Daten<p>bearbeiten</html>");
         jToggleButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -360,10 +361,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/files_add.png"))); // NOI18N
         jButton3.setText("<html>Datensatz<p>hinzufügen</html>");
         jButton3.setToolTipText("");
+        jButton3.setEnabled(false);
         jButton3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -376,20 +377,20 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/file_remove.png"))); // NOI18N
-        jButton5.setText("<html>Datensatz<p>löschen</html>");
-        jButton5.setToolTipText("");
-        jButton5.setEnabled(false);
-        jButton5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton5MouseClicked(evt);
+        jButton6.setText("löschen");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
             }
         });
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/ok.png"))); // NOI18N
+        jToggleButton2.setText("<html>Datensatz<p>auswählen</html>");
+        jToggleButton2.setEnabled(false);
+        jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/file_remove.png"))); // NOI18N
+        jToggleButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jToggleButton2MouseClicked(evt);
             }
         });
 
@@ -400,33 +401,40 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 776, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton6))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jCheckBox1)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(jToggleButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jSplitPane1.setDividerLocation(400);
@@ -449,11 +457,11 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 351, Short.MAX_VALUE)
+            .addGap(0, 320, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -472,7 +480,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
         );
 
         jSplitPane1.setBottomComponent(jPanel10);
@@ -482,14 +490,14 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jSplitPane1)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                .addComponent(jSplitPane1)
                 .addContainerGap())
         );
 
@@ -792,7 +800,7 @@ public class MainFrame extends javax.swing.JFrame {
 //
 //******************************************************************************
     private void jToggleButton1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jToggleButton1ItemStateChanged
-        jButton1.setEnabled(!jToggleButton1.isSelected());
+
     }//GEN-LAST:event_jToggleButton1ItemStateChanged
 
     private void jToggleButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton1MouseClicked
@@ -800,9 +808,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jToggleButton1MouseClicked
 
     private void setEditModus() {
-        jButton1.setEnabled(!jToggleButton1.isSelected());
-        jButton3.setEnabled(!jToggleButton1.isSelected());
-        jButton5.setEnabled(jToggleButton1.isSelected());
+        //jButton1.setEnabled(!jToggleButton1.isSelected());
+        jButton3.setEnabled(jToggleButton1.isSelected());
+        jToggleButton2.setEnabled(jToggleButton1.isSelected());
         if (jToggleButton1.isSelected()) {
             LogInfo("Bearbeitungs Modus ein");
             jToggleButton1.setText("<html>bearbeitung<p>stoppen</html>");
@@ -811,11 +819,12 @@ public class MainFrame extends javax.swing.JFrame {
             LogInfo("Bearbeitungs Modus aus");
             jToggleButton1.setText("<html>Daten<p>bearbeiten</html>");
             jTable3.setEnabled(false);
+            jToggleButton2.setSelected(false);
             int i = okcancel("Wollen Sie das Protokoll speichern ?");
             if (i == JOptionPane.YES_OPTION) {
                 speicherProtokoll();
             }
-             DatenNeuLaden(); 
+            DatenNeuLaden();
         }
     }
 
@@ -854,6 +863,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             String a = GetWhere(tm);
             LadeTabellenDaten(AS400Tabellenname, a);
+            jTable3.setEnabled(true);
         }
         //jToggleButton1.doClick();
 
@@ -864,19 +874,33 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
-    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
-        int i = okcancel("Wollen Sie den Datensatz wirklich löschen ?");
-        if (i == JOptionPane.YES_OPTION) {
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        jTextField1.setText("");
+    }//GEN-LAST:event_jButton6ActionPerformed
 
-        }
-    }//GEN-LAST:event_jButton5MouseClicked
+    private void jToggleButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton2MouseClicked
+        if (jToggleButton2.isSelected()) {
+            jTable3.setCellSelectionEnabled(false);
+            jTable3.setRowSelectionAllowed(true);
+            LogInfo("Datensatz selectieren");
+            jToggleButton2.setText("<html>Datensatz<p>löschen</html>");
+//            jToggleButton2.setBackground(Color.getHSBColor(255, 153, 51));
+            jTable3.setEnabled(true);
+        } else {
+            LogInfo("Datensatz löschen");
+            int i = okcancel("Wollen Sie den Datensatz wirklich löschen ?");
+            if (i == JOptionPane.YES_OPTION) {
+                DefaultTableModel tm = (DefaultTableModel) jTable3.getModel();
+                DeleteDatenSatz(tm);
+            }
+            jTable3.setCellSelectionEnabled(true);
+            jTable3.setRowSelectionAllowed(false);
+            jToggleButton2.setText("<html>Datensatz<p>auswählen</html>");
+//            jToggleButton2.setBackground(Color.getHSBColor(240, 240, 240));
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        jTable3.setRowSelectionAllowed(true);
-        setEnabled(true);
-
-
-    }//GEN-LAST:event_jButton5ActionPerformed
+            DatenNeuLaden();
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton2MouseClicked
 
 //******************************************************************************
 //
@@ -1301,16 +1325,63 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
+    private void DeleteDatenSatz(DefaultTableModel tm) {
+        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        Vector<Vector<Object>> type = new Vector<Vector<Object>>();
+        data = tm.getDataVector();
+        int selRow = jTable3.getSelectedRow();
+        int maxCol = tm.getColumnCount();
+//        neuValue = data.get(edtRow).get(edtCol).toString();
+        type = TabellenStrucktur.getDataVector();
+        String FeldWert = " ";
+        String FeldName = " ";
+//        if (type.get(edtCol).get(2).toString().equals("CHAR")) {
+//            neuValue = "'" + neuValue.trim() + "'";
+//        }
+
+        String UpdateString = "Delete from " + AS400Schemaname + "/" + AS400Tabellenname + " where ";
+
+        // System.out.println("alter Wert = "+tm.getColumnName(edtCol)+" = "+altValue);
+        for (int i = 0; i < maxCol; i++) {
+            FeldName = tm.getColumnName(i);
+            FeldWert = data.get(selRow).get(i).toString();
+            String Type = type.get(i).get(2).toString();
+            if (Type.equals("CHAR")) {
+                if ("".equals(FeldWert.trim())) {
+                    FeldWert = "' '";
+                } else {
+                    FeldWert = "'" + FeldWert.trim() + "'";
+                }
+            }
+            if (i == maxCol - 1) {
+                UpdateString += FeldName + " = " + FeldWert;
+            } else {
+                UpdateString += FeldName + " = " + FeldWert + " and ";
+            }
+        }
+
+        String error;
+        try {
+            LogInfo(UpdateString);
+            error = myAS400.executeSQL(UpdateString);
+            LogInfo(error);
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void InsertDaten(DefaultTableModel tm) {
         Vector<Vector<Object>> data = new Vector<Vector<Object>>();
         Vector<Vector<Object>> type = new Vector<Vector<Object>>();
         data = tm.getDataVector();
         int maxCol = tm.getColumnCount();
-        
+
         type = TabellenStrucktur.getDataVector();
         String FeldWert = " ";
         String FeldName = " ";
-        
 
         String UpdateString = "INSERT INTO " + AS400Schemaname + "/" + AS400Tabellenname + "(";
 
@@ -1453,14 +1524,15 @@ public class MainFrame extends javax.swing.JFrame {
             DialogDatenfeld ddf = new DialogDatenfeld(myMainFrame, true);
             ddf.setParameter(name, Type, getFormat(name), getTypebeschreibung(name));
             ddf.setVisible(true);
-
-            //String wert = JOptionPane.showInputDialog(name+" = ");
-            if (SelectText.length() > 0) {
-                SelectText += " and " + ddf.getSQL();
-            } else {
-                SelectText = ddf.getSQL();
+            String ws = ddf.getSQL();
+            if (!ws.isEmpty()) {
+                //String wert = JOptionPane.showInputDialog(name+" = ");
+                if (SelectText.length() > 0) {
+                    SelectText += " and " + ddf.getSQL();
+                } else {
+                    SelectText = ddf.getSQL();
+                }
             }
-
             jTextField1.setText(SelectText);
 
             DatenNeuLaden();
@@ -1520,7 +1592,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -1551,6 +1623,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton2;
     // End of variables declaration//GEN-END:variables
 
 }

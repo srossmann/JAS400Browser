@@ -36,7 +36,7 @@ public class SplashJFrame extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(495, 317));
         setUndecorated(true);
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AS400.gif"))); // NOI18N
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AS400.png"))); // NOI18N
         jLabel9.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 255), 5, true));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
