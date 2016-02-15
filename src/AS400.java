@@ -124,7 +124,8 @@ public class AS400 {
                     + "RIGHT OUTER JOIN SYSCOLUMNS ON "
                     + "SYSCOLUMNS.COLUMN_NAME = QADBKFLD.DBKFLD "
                     + "AND QADBKFLD.DBKFIL = SYSCOLUMNS.TABLE_NAME WHERE "
-                    + "SYSCOLUMNS.TABLE_NAME = '%s'", TabellenName.toUpperCase().trim());
+                    + "SYSCOLUMNS.TABLE_SCHEMA = '%s' and "
+                    + "SYSCOLUMNS.TABLE_NAME = '%s'", Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim());
 
           //  String SQLStatement = String.format("SELECT COLUMN_NAME,DATA_TYPE,LENGTH,NUMERIC_SCALE,COLUMN_HEADING "
             //          + "FROM SYSCOLUMNS WHERE TABLE_NAME='%s'  ", TabellenName.toUpperCase().trim());
