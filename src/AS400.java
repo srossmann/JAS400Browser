@@ -123,7 +123,8 @@ public class AS400 {
                     + "FROM QADBKFLD "
                     + "RIGHT OUTER JOIN SYSCOLUMNS ON "
                     + "SYSCOLUMNS.COLUMN_NAME = QADBKFLD.DBKFLD "
-                    + "AND QADBKFLD.DBKFIL = SYSCOLUMNS.TABLE_NAME WHERE "
+                    + "AND QADBKFLD.DBKFIL = SYSCOLUMNS.TABLE_NAME "
+                    + "AND QADBKFLD.DBKLIB = SYSCOLUMNS.TABLE_SCHEMA WHERE "
                     + "SYSCOLUMNS.TABLE_SCHEMA = '%s' and "
                     + "SYSCOLUMNS.TABLE_NAME = '%s'", Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim());
 
@@ -172,8 +173,10 @@ public class AS400 {
                     + "FROM QADBKFLD "
                     + "RIGHT OUTER JOIN SYSCOLUMNS ON "
                     + "SYSCOLUMNS.COLUMN_NAME = QADBKFLD.DBKFLD "
-                    + "AND QADBKFLD.DBKFIL = SYSCOLUMNS.TABLE_NAME WHERE "
-                    + "SYSCOLUMNS.TABLE_NAME = '%s'", TabellenName.toUpperCase().trim());
+                    + "AND QADBKFLD.DBKFIL = SYSCOLUMNS.TABLE_NAME "
+                    + "AND QADBKFLD.DBKLIB = SYSCOLUMNS.TABLE_SCHEMA WHERE "
+                    + "SYSCOLUMNS.TABLE_SCHEMA = '%s' and "
+                    + "SYSCOLUMNS.TABLE_NAME = '%s'", Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim());
 
            // String SQLStatement = String.format("SELECT COLUMN_NAME,DATA_TYPE,LENGTH,NUMERIC_SCALE,COLUMN_HEADING "
             //         + "FROM SYSCOLUMNS WHERE TABLE_NAME='%s'  ", TabellenName.toUpperCase().trim());
@@ -203,7 +206,7 @@ public class AS400 {
         String Bezeichnung = "";
         try {
             String SQLStatement = String.format("SELECT COLUMN_HEADING "
-                    + "FROM SYSCOLUMNS WHERE TABLE_NAME='%s' and COLUMN_NAME='%s'", TabellenName.toUpperCase().trim(), FeldName.toUpperCase().trim());
+                    + "FROM SYSCOLUMNS WHERE TABLE_SCHEMA='%s' and TABLE_NAME='%s' and COLUMN_NAME='%s'",Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim(), FeldName.toUpperCase().trim());
             rs = getSQLResult(SQLStatement);
             while (rs.next()) {
                 Bezeichnung = (String) rs.getObject(1).toString();

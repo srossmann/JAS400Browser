@@ -1097,7 +1097,7 @@ public class MainFrame extends javax.swing.JFrame {
         for (int row = 0; row <= jTable2.getRowCount() - 1; row++) {
             if (value.equals(jTable2.getValueAt(row, 1))) {
                 s = jTable2.getValueAt(row, 2).toString();
-                if (s.equals("CHAR")) {
+                if (s.equals("CHAR") || s.equals("TIMESTMP")) {
                     Integer len = (Integer) jTable2.getValueAt(row, 3);
                     for (int i = 0; i < len; i++) {
                         s1 += "A";
@@ -1287,7 +1287,7 @@ public class MainFrame extends javax.swing.JFrame {
         type = TabellenStrucktur.getDataVector();
         String FeldWert = " ";
         String FeldName = " ";
-        if (type.get(edtCol).get(2).toString().equals("CHAR")) {
+        if (type.get(edtCol).get(2).toString().equals("CHAR") || type.get(edtCol).get(2).toString().equals("TIMESTMP")) {
             neuValue = "'" + neuValue.trim() + "'";
         }
 
@@ -1302,7 +1302,7 @@ public class MainFrame extends javax.swing.JFrame {
                 FeldWert = data.get(edtRow).get(i).toString();
             }
             String Type = type.get(i).get(2).toString();
-            if (Type.equals("CHAR")) {
+            if (Type.equals("CHAR") || Type.equals("TIMESTMP")) {
                 if ("".equals(FeldWert.trim())) {
                     FeldWert = "' '";
                 } else {
@@ -1350,7 +1350,7 @@ public class MainFrame extends javax.swing.JFrame {
             FeldName = tm.getColumnName(i);
             FeldWert = data.get(selRow).get(i).toString();
             String Type = type.get(i).get(2).toString();
-            if (Type.equals("CHAR")) {
+            if (Type.equals("CHAR") || Type.equals("TIMESTMP")) {
                 if ("".equals(FeldWert.trim())) {
                     FeldWert = "' '";
                 } else {
@@ -1399,7 +1399,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         for (int i = 0; i < maxCol - 1; i++) {
             String Type = type.get(i).get(2).toString();
-            if (Type.equals("CHAR")) {
+            if (Type.equals("CHAR") || Type.equals("TIMESTMP")) {
                 FeldWert = "' '";
             } else {
                 FeldWert = "0";
@@ -1407,7 +1407,7 @@ public class MainFrame extends javax.swing.JFrame {
             UpdateString += FeldWert + ",";
         }
         String Type = type.get(maxCol - 1).get(2).toString();
-        if (Type.equals("CHAR")) {
+        if (Type.equals("CHAR") || Type.equals("TIMESTMP")) {
             FeldWert = "' '";
         } else {
             FeldWert = "0";
@@ -1437,7 +1437,7 @@ public class MainFrame extends javax.swing.JFrame {
         type = TabellenStrucktur.getDataVector();
         String FeldWert = " ";
         String FeldName = " ";
-        if (type.get(edtCol).get(2).toString().equals("CHAR")) {
+        if (type.get(edtCol).get(2).toString().equals("CHAR") || type.get(edtCol).get(2).toString().equals("TIMESTMP")) {
             neuValue = "'" + neuValue.trim() + "'";
         }
 
@@ -1447,7 +1447,7 @@ public class MainFrame extends javax.swing.JFrame {
         for (int i = 0; i < maxCol; i++) {
             FeldName = tm.getColumnName(i);
             String Type = type.get(i).get(2).toString();
-            if (Type.equals("CHAR")) {
+            if (Type.equals("CHAR") || Type.equals("TIMESTMP")) {
                 FeldWert = "' '";
             } else {
                 FeldWert = "0";

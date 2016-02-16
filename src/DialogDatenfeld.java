@@ -59,7 +59,7 @@ public class DialogDatenfeld extends javax.swing.JDialog {
         String wert = jFormattedTextField1.getText();
 
         //String wert = JOptionPane.showInputDialog(name+" = ");
-        if (lFeldtype.equals("CHAR")) {
+        if (lFeldtype.equals("CHAR") || lFeldtype.equals("TIMESTMP")) {
             s = lFeldname + vergleicher + "'" + wert + "'";
         } else {
             s = lFeldname + vergleicher + wert;
