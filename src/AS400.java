@@ -72,7 +72,7 @@ public class AS400 {
         try {
             st = AS400Conn.createStatement();
             st.executeQuery(SQLStatement);
-
+            st.close();
         } catch (Exception e) {
             rs = e.getMessage();
         }
@@ -94,7 +94,7 @@ public class AS400 {
         try {
             st = AS400Conn.createStatement();
             rs = st.executeQuery(SQLStatement);
-
+          //  st.close();
         } catch (Exception ex) {
             error = ex.getMessage();
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
@@ -147,6 +147,7 @@ public class AS400 {
                 }
                 data.add(vector);
             }
+            rs.close();
             dtm = new TabellenStructurTableModell(data, columnNames);
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,7 +212,7 @@ public class AS400 {
             while (rs.next()) {
                 Bezeichnung = (String) rs.getObject(1).toString();
             }
-
+            rs.close();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -241,6 +242,7 @@ public class AS400 {
                 vector.add(rs.getObject(1));
                 data.add(vector);
             }
+            rs.close();
             dtm = new DefaultTableModel(data, columnNames);
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
@@ -263,7 +265,7 @@ public class AS400 {
             while (rs.next()) {
                 tb = (String) rs.getObject(1).toString();
             }
-
+            rs.close();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -307,6 +309,7 @@ public class AS400 {
             while (rs.next()) {
                 sb = (String) rs.getObject(1).toString();
             }
+            rs.close();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -345,7 +348,9 @@ public class AS400 {
             rs_data = getSQLResult(SQLStatement);
             if (rs_data!=null) {
                 dtm =  ConvertToMetaData(rs_data);
+                rs_data.close();
             }
+            
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -383,6 +388,7 @@ public class AS400 {
             while (rs.next()) {
                 sb = (String) rs.getObject(1).toString();
             }
+            rs.close();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -670,6 +670,7 @@ public class MainFrame extends javax.swing.JFrame {
                 String s = String.format("<html><b> %-10s </b><p> %s</html>", rs.getString(1), rs.getString(2));
                 jComboBox1.addItem(s);
             }
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
 
