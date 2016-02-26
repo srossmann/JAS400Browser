@@ -69,12 +69,14 @@ public class AS400 {
 
         Statement st;
         String rs = "";
+        st = AS400Conn.createStatement();
         try {
-            st = AS400Conn.createStatement();
-            st.executeQuery(SQLStatement);
+            st.executeUpdate(SQLStatement);
+            //st.executeQuery(SQLStatement);
             st.close();
         } catch (Exception e) {
             rs = e.getMessage();
+            st.close();
         }
         if (rs.equals("Cursor state not valid.")) {
             rs = "O.K.";
