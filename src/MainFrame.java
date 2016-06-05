@@ -293,6 +293,11 @@ public class MainFrame extends javax.swing.JFrame {
             }
         ));
         jTable2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -340,21 +345,6 @@ public class MainFrame extends javax.swing.JFrame {
         jToggleButton1.setText("<html>Daten<p>bearbeiten</html>");
         jToggleButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jToggleButton1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Achtung.png"))); // NOI18N
-        jToggleButton1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jToggleButton1ItemStateChanged(evt);
-            }
-        });
-        jToggleButton1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jToggleButton1StateChanged(evt);
-            }
-        });
-        jToggleButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jToggleButton1MouseClicked(evt);
-            }
-        });
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jToggleButton1ActionPerformed(evt);
@@ -388,9 +378,9 @@ public class MainFrame extends javax.swing.JFrame {
         jToggleButton2.setText("<html>Datensatz<p>auswählen</html>");
         jToggleButton2.setEnabled(false);
         jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/file_remove.png"))); // NOI18N
-        jToggleButton2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jToggleButton2MouseClicked(evt);
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
             }
         });
 
@@ -613,7 +603,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
+            .addComponent(jSplitPane3)
         );
 
         setSize(new java.awt.Dimension(1178, 816));
@@ -796,24 +786,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
     }//GEN-LAST:event_jMenu1ActionPerformed
 
-    private void jToggleButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jToggleButton1StateChanged
-
-
-    }//GEN-LAST:event_jToggleButton1StateChanged
-
-//******************************************************************************
-//
-//
-//
-//******************************************************************************
-    private void jToggleButton1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jToggleButton1ItemStateChanged
-
-    }//GEN-LAST:event_jToggleButton1ItemStateChanged
-
-    private void jToggleButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton1MouseClicked
-        setEditModus();
-    }//GEN-LAST:event_jToggleButton1MouseClicked
-
     private void setEditModus() {
         //jButton1.setEnabled(!jToggleButton1.isSelected());
         jButton3.setEnabled(jToggleButton1.isSelected());
@@ -877,15 +849,11 @@ public class MainFrame extends javax.swing.JFrame {
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton3MouseClicked
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
-
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         jTextField1.setText("");
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void jToggleButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton2MouseClicked
+    private void select_row() {
         if (jToggleButton2.isSelected()) {
             jTable3.setCellSelectionEnabled(false);
             jTable3.setRowSelectionAllowed(true);
@@ -907,7 +875,25 @@ public class MainFrame extends javax.swing.JFrame {
 
             DatenNeuLaden();
         }        // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton2MouseClicked
+    }
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        setEditModus();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        select_row();
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        int irow = jTable2.getSelectedRow();
+        boolean b1 = (boolean) jTable2.getValueAt(irow, 0);
+        if (b1) {
+            jTable2.setValueAt(false, irow, 0);
+        }else{     
+            jTable2.setValueAt(true, irow, 0);
+        }
+    }//GEN-LAST:event_jTable2MouseClicked
 
 //******************************************************************************
 //
