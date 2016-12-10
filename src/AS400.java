@@ -180,6 +180,23 @@ public class AS400 {
                     + "AND QADBKFLD.DBKLIB = SYSCOLUMNS.TABLE_SCHEMA WHERE "
                     + "SYSCOLUMNS.TABLE_SCHEMA = '%s' and "
                     + "SYSCOLUMNS.TABLE_NAME = '%s'", Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim());
+            
+            
+            
+//            String SQLStatement = String.format("SELECT SYSCOLUMNS.COLUMN_NAME,SYSCOLUMNS.DATA_TYPE,"
+//                    + "SYSCOLUMNS.LENGTH,"
+//                    + "SYSCOLUMNS.NUMERIC_SCALE,"
+//                    + "SYSCOLUMNS.COLUMN_HEADING,"
+//                    //+ "SYSCOLUMNS.TABLE_NAME, "
+//                    + "QADBKFLD.DBKPOS,"
+//                    + "QADBKFLD.DBKORD "
+//                    + "FROM QADBKFLD "
+//                    + "RIGHT OUTER JOIN SYSCOLUMNS ON "
+//                    + "SYSCOLUMNS.COLUMN_NAME = QADBKFLD.DBKFLD "
+//                    + "AND QADBKFLD.DBKFIL = SYSCOLUMNS.TABLE_NAME "
+//                    + "AND QADBKFLD.DBKLIB = SYSCOLUMNS.TABLE_SCHEMA WHERE "
+//                    + "SYSCOLUMNS.TABLE_SCHEMA = '%s' and "
+//                    + "SYSCOLUMNS.TABLE_NAME = '%s'", Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim());
 
            // String SQLStatement = String.format("SELECT COLUMN_NAME,DATA_TYPE,LENGTH,NUMERIC_SCALE,COLUMN_HEADING "
             //         + "FROM SYSCOLUMNS WHERE TABLE_NAME='%s'  ", TabellenName.toUpperCase().trim());
@@ -447,7 +464,7 @@ class TabellenStructurTableModell extends DefaultTableModel {
     public boolean isCellEditable(int row, int col) {
         if (col == 0) //first column will be uneditable
         {
-            return true;
+            return false;
         } else {
             return false;
         }

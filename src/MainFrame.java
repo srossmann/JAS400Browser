@@ -1,5 +1,4 @@
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Point;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -25,9 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -36,9 +32,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
-
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -147,6 +140,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -154,10 +148,10 @@ public class MainFrame extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jCheckBox1 = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jButton3 = new javax.swing.JButton();
+        btnEditTabelle = new javax.swing.JToggleButton();
+        btnAddData = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jToggleButton2 = new javax.swing.JToggleButton();
+        btnSelectData = new javax.swing.JToggleButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -169,9 +163,11 @@ public class MainFrame extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton5 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AS400 Browser for the Arbeitserleichterung ");
@@ -240,6 +236,13 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setText("Tabelle");
 
+        jButton7.setText("jButton7");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -260,6 +263,8 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton7)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(138, 138, 138))
         );
@@ -270,18 +275,23 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(9, 9, 9))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton4)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(9, 9, 9))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton7)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -332,38 +342,43 @@ public class MainFrame extends javax.swing.JFrame {
         jCheckBox1.setText("max 100 Datensätze");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/recycle.png"))); // NOI18N
-        jButton1.setText("<html>Datensätze<p>neu laden</html>");
+        jButton1.setText("<html>Ansicht<p>laden</html>");
         jButton1.setToolTipText("");
         jButton1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jButton1.setIconTextGap(1);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/edit.png"))); // NOI18N
-        jToggleButton1.setText("<html>Daten<p>bearbeiten</html>");
-        jToggleButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jToggleButton1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Achtung.png"))); // NOI18N
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnEditTabelle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/edit.png"))); // NOI18N
+        btnEditTabelle.setText("<html>Tabelle<p>bearbeiten</html>");
+        btnEditTabelle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnEditTabelle.setIconTextGap(0);
+        btnEditTabelle.setMinimumSize(new java.awt.Dimension(100, 50));
+        btnEditTabelle.setPreferredSize(new java.awt.Dimension(120, 57));
+        btnEditTabelle.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Achtung.png"))); // NOI18N
+        btnEditTabelle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                btnEditTabelleActionPerformed(evt);
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/files_add.png"))); // NOI18N
-        jButton3.setText("<html>Datensatz<p>hinzufügen</html>");
-        jButton3.setToolTipText("");
-        jButton3.setEnabled(false);
-        jButton3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnAddData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/files_add.png"))); // NOI18N
+        btnAddData.setText("<html>Datensatz<p>hinzufügen</html>");
+        btnAddData.setToolTipText("");
+        btnAddData.setEnabled(false);
+        btnAddData.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        btnAddData.setIconTextGap(1);
+        btnAddData.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
+                btnAddDataMouseClicked(evt);
             }
         });
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnAddData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnAddDataActionPerformed(evt);
             }
         });
 
@@ -374,13 +389,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/ok.png"))); // NOI18N
-        jToggleButton2.setText("<html>Datensatz<p>auswählen</html>");
-        jToggleButton2.setEnabled(false);
-        jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/file_remove.png"))); // NOI18N
-        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnSelectData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/ok.png"))); // NOI18N
+        btnSelectData.setText("<html>Datensatz<p>auswählen</html>");
+        btnSelectData.setEnabled(false);
+        btnSelectData.setIconTextGap(1);
+        btnSelectData.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/file_remove.png"))); // NOI18N
+        btnSelectData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton2ActionPerformed(evt);
+                btnSelectDataActionPerformed(evt);
             }
         });
 
@@ -392,16 +408,16 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditTabelle, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAddData, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSelectData, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jCheckBox1)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 43, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jTextField1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -411,19 +427,16 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addComponent(jToggleButton2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnEditTabelle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAddData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSelectData))
+                    .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
@@ -439,20 +452,19 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 959, Short.MAX_VALUE)
+            .addGap(0, 903, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel9Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 939, Short.MAX_VALUE)
-                    .addContainerGap()))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 893, Short.MAX_VALUE)))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 338, Short.MAX_VALUE)
+            .addGap(0, 239, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -471,7 +483,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
         );
 
         jSplitPane1.setBottomComponent(jPanel10);
@@ -480,8 +492,10 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -524,7 +538,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, 0, 182, Short.MAX_VALUE))
+                .addComponent(jComboBox1, 0, 223, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -563,11 +577,13 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jSplitPane3.setLeftComponent(jPanel5);
+
+        jButton5.setText("jButton5");
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/connect.png"))); // NOI18N
         jMenu2.setText("Logout");
@@ -593,20 +609,34 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu1);
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/play_1.png"))); // NOI18N
+        jMenu3.setText("TN5250");
+        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu3MouseClicked(evt);
+            }
+        });
+        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu3ActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1162, Short.MAX_VALUE)
+            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1147, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3)
+            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(1178, 816));
+        setSize(new java.awt.Dimension(1163, 741));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 //******************************************************************************
@@ -686,8 +716,8 @@ public class MainFrame extends javax.swing.JFrame {
 //
 //******************************************************************************    
     private void LadeDatenTabelle() {
-        if (jToggleButton1.isSelected()) {
-            jToggleButton1.setSelected(false);
+        if (btnEditTabelle.isSelected()) {
+            btnEditTabelle.setSelected(false);
             setEditModus();
         }
 
@@ -788,18 +818,24 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void setEditModus() {
         //jButton1.setEnabled(!jToggleButton1.isSelected());
-        jButton3.setEnabled(jToggleButton1.isSelected());
-        jToggleButton2.setEnabled(jToggleButton1.isSelected());
-        if (jToggleButton1.isSelected()) {
+        //btnAddData.setEnabled(btnEditTabelle.isSelected());
+        //btnSelectData.setEnabled(btnEditTabelle.isSelected());
+        if (btnEditTabelle.isSelected()) {
+            btnAddData.setEnabled(true);
+            btnSelectData.setEnabled(true);
             LogInfo("Bearbeitungs Modus ein");
-            jToggleButton1.setText("<html>bearbeitung<p>stoppen</html>");
+            btnEditTabelle.setText("<html>bearbeitung<p>stoppen</html>");
             jTable3.setEnabled(true);
         } else {
+            btnAddData.setEnabled(false);
+            btnSelectData.setEnabled(false);
+            btnSelectData.setSelected(false);
+            btnSelectData.setText("<html>Datensatz<p>auswählen</html>");
             LogInfo("Bearbeitungs Modus aus");
             DatenNeuLaden();
-            jToggleButton1.setText("<html>Daten<p>bearbeiten</html>");
+            btnEditTabelle.setText("<html>Daten<p>bearbeiten</html>");
             jTable3.setEnabled(false);
-            jToggleButton2.setSelected(false);
+            btnSelectData.setSelected(false);
             int i = okcancel("Wollen Sie das Protokoll speichern ?");
             if (i == JOptionPane.YES_OPTION) {
                 speicherProtokoll();
@@ -830,11 +866,11 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField3KeyPressed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnAddDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddDataActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnAddDataActionPerformed
 
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+    private void btnAddDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddDataMouseClicked
         int i = okcancel("Wollen einen Datensatz wirklich hinzfügen ?");
         if (i == JOptionPane.YES_OPTION) {
             DefaultTableModel tm = (DefaultTableModel) jTable3.getModel();
@@ -847,18 +883,18 @@ public class MainFrame extends javax.swing.JFrame {
         //jToggleButton1.doClick();
 
 // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3MouseClicked
+    }//GEN-LAST:event_btnAddDataMouseClicked
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         jTextField1.setText("");
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void select_row() {
-        if (jToggleButton2.isSelected()) {
+        if (btnSelectData.isSelected()) {
             jTable3.setCellSelectionEnabled(false);
             jTable3.setRowSelectionAllowed(true);
             LogInfo("Datensatz selectieren");
-            jToggleButton2.setText("<html>Datensatz<p>löschen</html>");
+            btnSelectData.setText("<html>Datensatz<p>löschen</html>");
 //            jToggleButton2.setBackground(Color.getHSBColor(255, 153, 51));
             jTable3.setEnabled(true);
         } else {
@@ -870,30 +906,61 @@ public class MainFrame extends javax.swing.JFrame {
             }
             jTable3.setCellSelectionEnabled(true);
             jTable3.setRowSelectionAllowed(false);
-            jToggleButton2.setText("<html>Datensatz<p>auswählen</html>");
+            btnSelectData.setText("<html>Datensatz<p>auswählen</html>");
 //            jToggleButton2.setBackground(Color.getHSBColor(240, 240, 240));
 
             DatenNeuLaden();
         }        // TODO add your handling code here:
     }
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+    private void btnEditTabelleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditTabelleActionPerformed
         setEditModus();
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+    }//GEN-LAST:event_btnEditTabelleActionPerformed
 
-    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+    private void btnSelectDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectDataActionPerformed
         select_row();
-    }//GEN-LAST:event_jToggleButton2ActionPerformed
+    }//GEN-LAST:event_btnSelectDataActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         int irow = jTable2.getSelectedRow();
         boolean b1 = (boolean) jTable2.getValueAt(irow, 0);
         if (b1) {
             jTable2.setValueAt(false, irow, 0);
-        }else{     
+        } else {
             jTable2.setValueAt(true, irow, 0);
         }
     }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu3MouseClicked
+
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+    
+ 
+                 
+         
+
+
+    }//GEN-LAST:event_jMenu3ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+String working_dir = System.getProperty("user.dir"); 
+  
+        
+         
+            String javaPath = System.getProperty("java.home");
+            //ProcessBuilder pb = new ProcessBuilder(javaPath + "\\bin\\java -jar C:\\Users\\jsrun.jar");
+            ProcessBuilder pb = new ProcessBuilder(new String[]{javaPath + "\\bin\\java ","-jar ","C:\\Daten\\Entwicklung\\Rossmann\\Java\\Projekte\\JAS400Browser\\dist\\lib\\tn5250j.jar",""});
+        try {
+            pb.start();
+            //Runtime.getRuntime().exec(new String[]{"java ","-jar ","C:\\Daten\\Entwicklung\\Rossmann\\Java\\Projekte\\JAS400Browser\\dist\\lib\\tn5250j.jar",""});
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+         
+    }//GEN-LAST:event_jButton7ActionPerformed
 
 //******************************************************************************
 //
@@ -987,14 +1054,14 @@ public class MainFrame extends javax.swing.JFrame {
 //******************************************************************************
     private Vector getFeldnamen() {
         Vector FName = new Vector<String>();
-        jToggleButton1.setEnabled(true);
+        btnEditTabelle.setEnabled(true);
 
         for (int row = 0; row <= jTable2.getRowCount() - 1; row++) {
             String name = (String) jTable2.getValueAt(row, 1);
             if ((boolean) jTable2.getValueAt(row, 0) == true) {
                 FName.add(name);
             } else {
-                jToggleButton1.setEnabled(false);
+                btnEditTabelle.setEnabled(false);
             }
 
         }
@@ -1584,11 +1651,15 @@ public class MainFrame extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddData;
+    private javax.swing.JToggleButton btnEditTabelle;
+    private javax.swing.JToggleButton btnSelectData;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -1597,6 +1668,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JList jList1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -1618,8 +1690,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
     // End of variables declaration//GEN-END:variables
 
 }
