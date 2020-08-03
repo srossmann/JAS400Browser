@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2017-01-03T13:08:15 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TabellenStruckturReport_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fe16587c-e8d2-4e62-a852-0c7020563483">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value="IlFTWVMyIi4iU1lTQ09MVU1OUyIgLDI2LDEwLDliMzg3OTNlLWJmOGEtNDM5ZC1hYjEyLTQ3MjJk&#xA;YWRhMjczMTsiUVNZUyIuIlFBREJLRkxEIiAsMzE3LDExLGExMTEwNzI2LTZlZDgtNDliMS1iOTE1&#xA;LWRhMDVkZDkzYzc3Mjs="/>
+	<parameter name="SchemaName" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="SchemaBeschreibung" class="java.lang.String"/>
+	<parameter name="TabellenName" class="java.lang.String"/>
+	<parameter name="TabellenBeschreibung" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT "QSYS"."QADBKFLD"."DBKPOS",
+	"QSYS"."QADBKFLD"."DBKORD",
+	"QSYS2"."SYSCOLUMNS"."COLUMN_NAME",
+	"QSYS2"."SYSCOLUMNS"."DATA_TYPE",
+	"QSYS2"."SYSCOLUMNS"."LENGTH",
+	"QSYS2"."SYSCOLUMNS"."NUMERIC_SCALE",
+	"QSYS2"."SYSCOLUMNS"."COLUMN_HEADING",
+	"QSYS2"."SYSCOLUMNS"."TABLE_NAME"
+FROM "QSYS"."QADBKFLD"
+	RIGHT OUTER JOIN "QSYS2"."SYSCOLUMNS" ON 
+	 "QSYS2"."SYSCOLUMNS"."COLUMN_NAME" = "QSYS"."QADBKFLD"."DBKFLD" 
+	 AND "QSYS"."QADBKFLD"."DBKFIL" = "QSYS2"."SYSCOLUMNS"."TABLE_NAME" 
+WHERE 
+	 "QSYS2"."SYSCOLUMNS"."TABLE_NAME" = 'BDBE0401']]>
+	</queryString>
+	<field name="SRCDTA" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="114" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="30" uuid="e9c80211-4b8f-4db0-a879-8f08dfc2c9be"/>
+				<textElement>
+					<font size="22"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SchemaName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="0" width="440" height="30" uuid="ed68fe29-8810-4413-91c5-6ab3222c503e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SchemaBeschreibung}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="140" height="30" uuid="f63cbab1-7e86-4b6d-a5b8-e210720179a5"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TabellenName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="74" width="550" height="30" uuid="1cdd99d0-7e26-4185-9fd8-0aa0afee7265"/>
+				<textElement verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TabellenBeschreibung}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="550" height="20" uuid="b5a08e8d-1957-49ca-94ad-b5e7d3b33147"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SRCDTA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement x="350" y="0" width="100" height="30" uuid="53d07964-49dd-4296-8c4d-2104504444e6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="450" y="0" width="100" height="30" uuid="9d1eef8e-21f8-410f-a402-1db9cc3decb4"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="8" splitType="Stretch"/>
+	</summary>
+</jasperReport>

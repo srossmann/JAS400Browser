@@ -21,11 +21,17 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.view.JasperViewer;
 
 /*
@@ -48,6 +54,7 @@ public class AS400 {
 //
 //
 //******************************************************************************
+
     public boolean Connect(String IPAdresse, String User, String Passwort) {
         try {
             Class.forName("com.ibm.as400.access.AS400JDBCDriver");
@@ -65,6 +72,7 @@ public class AS400 {
 //
 //
 //******************************************************************************
+
     public String executeSQL(String SQLStatement) throws ClassNotFoundException, SQLException {
 
         Statement st;
@@ -83,7 +91,7 @@ public class AS400 {
         }
         return rs;
     }
-    
+
 //******************************************************************************
 //
 //
@@ -96,7 +104,7 @@ public class AS400 {
         try {
             st = AS400Conn.createStatement();
             rs = st.executeQuery(SQLStatement);
-          //  st.close();
+            //  st.close();
         } catch (Exception ex) {
             error = ex.getMessage();
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,7 +138,7 @@ public class AS400 {
                     + "SYSCOLUMNS.TABLE_SCHEMA = '%s' and "
                     + "SYSCOLUMNS.TABLE_NAME = '%s'", Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim());
 
-          //  String SQLStatement = String.format("SELECT COLUMN_NAME,DATA_TYPE,LENGTH,NUMERIC_SCALE,COLUMN_HEADING "
+            //  String SQLStatement = String.format("SELECT COLUMN_NAME,DATA_TYPE,LENGTH,NUMERIC_SCALE,COLUMN_HEADING "
             //          + "FROM SYSCOLUMNS WHERE TABLE_NAME='%s'  ", TabellenName.toUpperCase().trim());
             rs = getSQLResult(SQLStatement);
             ResultSetMetaData metaData = rs.getMetaData();
@@ -180,26 +188,7 @@ public class AS400 {
                     + "AND QADBKFLD.DBKLIB = SYSCOLUMNS.TABLE_SCHEMA WHERE "
                     + "SYSCOLUMNS.TABLE_SCHEMA = '%s' and "
                     + "SYSCOLUMNS.TABLE_NAME = '%s'", Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim());
-            
-            
-            
-//            String SQLStatement = String.format("SELECT SYSCOLUMNS.COLUMN_NAME,SYSCOLUMNS.DATA_TYPE,"
-//                    + "SYSCOLUMNS.LENGTH,"
-//                    + "SYSCOLUMNS.NUMERIC_SCALE,"
-//                    + "SYSCOLUMNS.COLUMN_HEADING,"
-//                    //+ "SYSCOLUMNS.TABLE_NAME, "
-//                    + "QADBKFLD.DBKPOS,"
-//                    + "QADBKFLD.DBKORD "
-//                    + "FROM QADBKFLD "
-//                    + "RIGHT OUTER JOIN SYSCOLUMNS ON "
-//                    + "SYSCOLUMNS.COLUMN_NAME = QADBKFLD.DBKFLD "
-//                    + "AND QADBKFLD.DBKFIL = SYSCOLUMNS.TABLE_NAME "
-//                    + "AND QADBKFLD.DBKLIB = SYSCOLUMNS.TABLE_SCHEMA WHERE "
-//                    + "SYSCOLUMNS.TABLE_SCHEMA = '%s' and "
-//                    + "SYSCOLUMNS.TABLE_NAME = '%s'", Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim());
 
-           // String SQLStatement = String.format("SELECT COLUMN_NAME,DATA_TYPE,LENGTH,NUMERIC_SCALE,COLUMN_HEADING "
-            //         + "FROM SYSCOLUMNS WHERE TABLE_NAME='%s'  ", TabellenName.toUpperCase().trim());
             ResultSet resultSet = statement.executeQuery(SQLStatement);
             JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(resultSet);
 
@@ -209,7 +198,92 @@ public class AS400 {
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, resultSetDataSource);
 
             JasperViewer.viewReport(jasperPrint, false);
+            
+      //      String outputFilename = "FancyPants.pdf";
+      //      JasperExportManager.exportReportToPdfFile(jasperPrint, outputFilename);
 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Reportfehler", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }
+
+    public void druckeMember(String TabellenName) {
+        try {
+            
+            HashMap map = new HashMap();
+            map.put("SchemaName", "QTEMP");
+            //map.put("SchemaBeschreibung", getSchemaBeschreibung(Schema));
+            map.put("TabellenName", TabellenName);
+            //map.put("TabellenBeschreibung", getTabellenBeschreibung(Schema, TabellenName));
+           
+            Statement statement = AS400Conn.createStatement();
+            String SQLStatement = String.format("SELECT SRCDTA from QTEMP."+TabellenName);
+    
+
+            ResultSet resultSet = statement.executeQuery(SQLStatement);
+            JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(resultSet);
+
+//            JasperReport jasperReport = JasperCompileManager.compileReport("D:\\Entwicklung\\Rossmann\\Java\\Projekte\\JAS400Browser\\Reports\\TabellenStruckturReport_A4.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport("./Reports/MemberReport_A4.jrxml");
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, resultSetDataSource);
+
+            JasperViewer.viewReport(jasperPrint, false);
+            
+      //      String outputFilename = "FancyPants.pdf";
+      //      JasperExportManager.exportReportToPdfFile(jasperPrint, outputFilename);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Reportfehler", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }
+
+    
+    public void ExcelTabellenStrucktur(String Schema, String TabellenName) {
+        try {
+            HashMap map = new HashMap();
+            map.put("SchemaName", Schema);
+            map.put("SchemaBeschreibung", getSchemaBeschreibung(Schema));
+            map.put("TabellenName", TabellenName);
+            map.put("TabellenBeschreibung", getTabellenBeschreibung(Schema, TabellenName));
+
+            Statement statement = AS400Conn.createStatement();
+            String SQLStatement = String.format("SELECT SYSCOLUMNS.COLUMN_NAME,SYSCOLUMNS.DATA_TYPE,"
+                    + "SYSCOLUMNS.LENGTH,"
+                    + "SYSCOLUMNS.NUMERIC_SCALE,"
+                    + "SYSCOLUMNS.COLUMN_HEADING,"
+                    //+ "SYSCOLUMNS.TABLE_NAME, "
+                    + "QADBKFLD.DBKPOS,"
+                    + "QADBKFLD.DBKORD "
+                    + "FROM QADBKFLD "
+                    + "RIGHT OUTER JOIN SYSCOLUMNS ON "
+                    + "SYSCOLUMNS.COLUMN_NAME = QADBKFLD.DBKFLD "
+                    + "AND QADBKFLD.DBKFIL = SYSCOLUMNS.TABLE_NAME "
+                    + "AND QADBKFLD.DBKLIB = SYSCOLUMNS.TABLE_SCHEMA WHERE "
+                    + "SYSCOLUMNS.TABLE_SCHEMA = '%s' and "
+                    + "SYSCOLUMNS.TABLE_NAME = '%s'", Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim());
+
+            ResultSet resultSet = statement.executeQuery(SQLStatement);
+            JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(resultSet);
+
+//            JasperReport jasperReport = JasperCompileManager.compileReport("D:\\Entwicklung\\Rossmann\\Java\\Projekte\\JAS400Browser\\Reports\\TabellenStruckturReport_A4.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport("./Reports/TabellenStruckturReport_A4.jrxml");
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, resultSetDataSource);
+
+            JRXlsExporter exporter = new JRXlsExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
+
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, "workbook.xls");
+            exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+            exporter.exportReport();
+            try {
+                Runtime.getRuntime().exec("cmd /c workbook.xls");
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Reportfehler", JOptionPane.WARNING_MESSAGE);
         }
@@ -226,7 +300,7 @@ public class AS400 {
         String Bezeichnung = "";
         try {
             String SQLStatement = String.format("SELECT COLUMN_HEADING "
-                    + "FROM SYSCOLUMNS WHERE TABLE_SCHEMA='%s' and TABLE_NAME='%s' and COLUMN_NAME='%s'",Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim(), FeldName.toUpperCase().trim());
+                    + "FROM SYSCOLUMNS WHERE TABLE_SCHEMA='%s' and TABLE_NAME='%s' and COLUMN_NAME='%s'", Schema.toUpperCase().trim(), TabellenName.toUpperCase().trim(), FeldName.toUpperCase().trim());
             rs = getSQLResult(SQLStatement);
             while (rs.next()) {
                 Bezeichnung = (String) rs.getObject(1).toString();
@@ -247,6 +321,11 @@ public class AS400 {
         ResultSet rs = null;
         DefaultTableModel dtm = null;
         try {
+            
+            //select CAST(TABLE_TEXT as CHAR(50)) as TABLE_TEXT,TABLE_NAME 
+            //FROM SYSTABLES WHERE TABLE_SCHEMA = 'HWD' and                
+            //Upper(TABLE_TEXT) like '%STAT%'                              
+            
             String SQLStatement = String.format("SELECT CAST(TABLE_TEXT as CHAR(50)) "
                     + "as TABLE_TEXT,TABLE_NAME FROM SYSTABLES where TABLE_SCHEMA='%s'", Lib.toUpperCase().trim());
             rs = getSQLResult(SQLStatement);
@@ -341,7 +420,7 @@ public class AS400 {
 //
 //******************************************************************************
     public DefaultTableModel getTableData(String Schema, String Tabelle, Vector FName, String where, Boolean MaxDaten) {
-        
+
         String FeldName = FName.toString();
         FeldName = FeldName.replace("[", " ");
         FeldName = FeldName.replace("]", " ");
@@ -362,19 +441,50 @@ public class AS400 {
                     SQLStatement = String.format("SELECT " + FeldName + " FROM %S/%s   ", Schema.toUpperCase().trim(), Tabelle.toUpperCase().trim());
                 }
             }
-            
+
             ResulSQLStatement = SQLStatement;
             rs_data = getSQLResult(SQLStatement);
-            if (rs_data!=null) {
-                dtm =  ConvertToMetaData(rs_data);
+            if (rs_data != null) {
+                dtm = ConvertToMetaData(rs_data);
                 rs_data.close();
             }
-            
+
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
         }
         return dtm;
     }
+
+
+//******************************************************************************
+//
+//
+//
+//******************************************************************************
+    public Integer getTableDataAnz(String Schema, String Tabelle,String where) {
+
+        Integer Anz = 0;
+        try {
+            String SQLStatement = "";
+            if (where.length() > 0) {
+                SQLStatement = String.format("SELECT count(*) FROM %S/%s where %s  ", Schema.toUpperCase().trim(), Tabelle.toUpperCase().trim(), where);
+            } else
+            {
+                SQLStatement = String.format("SELECT count(*) FROM %S/%s ", Schema.toUpperCase().trim(), Tabelle.toUpperCase().trim());
+            }
+            ResulSQLStatement = SQLStatement;
+            rs_data = getSQLResult(SQLStatement);
+            while (rs_data.next()) {
+                Anz = (Integer) rs_data.getObject(1);
+            }
+ 
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Anz;
+    }
+
 
     private DefaultTableModel ConvertToMetaData(ResultSet rs) throws SQLException {
         DefaultTableModel dtm;
@@ -395,7 +505,7 @@ public class AS400 {
         dtm = new DefaultTableModel(data, columnNames);
         return dtm;
     }
-    
+
     public void Datensatzbearbeiten(JTable jTable3) {
 
         String sb = "";
@@ -419,6 +529,36 @@ public class AS400 {
 //        com.ibm.as400.access.AS400File asf = new test123(myAS, "BKBK0100"); 
 //          
 //        asf.open();
+    }
+
+    DefaultTableModel getLibraryS(String Schema, String Search) {
+        ResultSet rs = null;
+        DefaultTableModel dtm = null;
+        try {
+            
+            String SQLStatement = String.format("select CAST(TABLE_TEXT as CHAR(50)) as TABLE_TEXT,TABLE_NAME "
+            + "FROM SYSTABLES WHERE TABLE_SCHEMA = '%s' and (Upper(TABLE_TEXT) like '%%%s%%' or Upper(TABLE_NAME) like '%%%s%%') ", Schema.toUpperCase().trim(),Search,Search);                              
+            
+//            String SQLStatement = String.format("SELECT CAST(TABLE_TEXT as CHAR(50)) "
+//                    + "as TABLE_TEXT,TABLE_NAME FROM SYSTABLES where TABLE_SCHEMA='%s'", Lib.toUpperCase().trim());
+            rs = getSQLResult(SQLStatement);
+            ResultSetMetaData metaData = rs.getMetaData();
+            Vector<String> columnNames = new Vector<String>();
+            columnNames.add(metaData.getColumnName(2));
+            columnNames.add(metaData.getColumnName(1));
+            Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+            while (rs.next()) {
+                Vector<Object> vector = new Vector<Object>();
+                vector.add(rs.getObject(2));
+                vector.add(rs.getObject(1));
+                data.add(vector);
+            }
+            rs.close();
+            dtm = new DefaultTableModel(data, columnNames);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AS400.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtm;
     }
 
 }

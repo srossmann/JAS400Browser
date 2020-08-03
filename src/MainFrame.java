@@ -9,10 +9,15 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -32,6 +37,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -69,16 +80,23 @@ public class MainFrame extends javax.swing.JFrame {
 
     public AS400 myAS400 = null;
 
+    int Versionsnummer = 0;
+
 //******************************************************************************
 //  Erzeugt ein neues MainFrame
 //
 //
 //******************************************************************************
-    public MainFrame() {
+    public MainFrame(int Versio) {
+        Versionsnummer = Versio;
         initComponents();
         myMainFrame = this;
         JTableHeader header = jTable2.getTableHeader();
         header.addMouseListener(new TableHeaderMouseListenerChecket(jTable2));
+
+        String s = String.valueOf(Versio);
+
+        jMenueVersion.setText("Version " + s);
 
         LadeParametrer();
 
@@ -129,6 +147,7 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
         jSplitPane3 = new javax.swing.JSplitPane();
         jSplitPane4 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
@@ -140,6 +159,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jButton8 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -152,6 +172,7 @@ public class MainFrame extends javax.swing.JFrame {
         btnAddData = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         btnSelectData = new javax.swing.JToggleButton();
+        jLabel2 = new javax.swing.JLabel();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -161,13 +182,25 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox();
+        jTextField4 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        jMenueVersion = new javax.swing.JMenu();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AS400 Browser for the Arbeitserleichterung ");
@@ -196,8 +229,8 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setText(" ");
         jLabel1.setToolTipText("");
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/printer.png"))); // NOI18N
-        jButton4.setText("<html>Struktur<p>drucken</html>");
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/file_edit.png"))); // NOI18N
+        jButton4.setLabel("<html>Struktur<p>nach Excel</html>");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -236,7 +269,17 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setText("Tabelle");
 
-        jButton7.setText("jButton7");
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/printer.png"))); // NOI18N
+        jButton8.setText("<html>Struktur<p>drucken</html>");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/file_edit.png"))); // NOI18N
+        jButton7.setEnabled(false);
+        jButton7.setLabel("<html>MEMBER<p>drucken</html>");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -250,7 +293,9 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(138, 138, 138))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -262,11 +307,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton7)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(138, 138, 138))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 53, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,23 +321,20 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton8)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton4)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(9, 9, 9))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton7)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jButton7))
+                .addGap(16, 16, 16))
         );
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -303,6 +346,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         ));
         jTable2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTable2.setCellSelectionEnabled(true);
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -325,7 +369,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
         );
 
         jSplitPane4.setLeftComponent(jPanel1);
@@ -400,6 +444,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setText("2345");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -416,7 +463,9 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jCheckBox1)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBox1)
+                            .addComponent(jLabel2))
                         .addGap(0, 43, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jTextField1)
@@ -434,7 +483,10 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnAddData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnSelectData))
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jCheckBox1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -452,19 +504,20 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 903, Short.MAX_VALUE)
+            .addGap(0, 828, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel9Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 893, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 239, Short.MAX_VALUE)
+            .addGap(0, 276, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel9Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -476,10 +529,9 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+            .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3)
-                .addContainerGap())
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -502,7 +554,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -532,20 +584,31 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jTextField4.setToolTipText("");
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField4KeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, 0, 223, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox1, 0, 289, Short.MAX_VALUE)
+                    .addComponent(jTextField4)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -575,9 +638,9 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -588,6 +651,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/connect.png"))); // NOI18N
         jMenu2.setText("Logout");
         jMenu2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jMenu2.setPreferredSize(new java.awt.Dimension(150, 48));
         jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu2MouseClicked(evt);
@@ -597,6 +661,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/info.png"))); // NOI18N
         jMenu1.setText("Info");
+        jMenu1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jMenu1.setPreferredSize(new java.awt.Dimension(150, 48));
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu1MouseClicked(evt);
@@ -609,19 +675,17 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu1);
 
-        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/play_1.png"))); // NOI18N
-        jMenu3.setText("TN5250");
-        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu3MouseClicked(evt);
-            }
-        });
-        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+        jMenueVersion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/ahmad hania logo.png"))); // NOI18N
+        jMenueVersion.setText("Version X");
+        jMenueVersion.setFocusCycleRoot(true);
+        jMenueVersion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jMenueVersion.setPreferredSize(new java.awt.Dimension(150, 48));
+        jMenueVersion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu3ActionPerformed(evt);
+                jMenueVersionActionPerformed(evt);
             }
         });
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(jMenueVersion);
 
         setJMenuBar(jMenuBar1);
 
@@ -629,14 +693,14 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1147, Short.MAX_VALUE)
+            .addComponent(jSplitPane3)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+            .addComponent(jSplitPane3)
         );
 
-        setSize(new java.awt.Dimension(1163, 741));
+        setSize(new java.awt.Dimension(1152, 718));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 //******************************************************************************
@@ -779,19 +843,19 @@ public class MainFrame extends javax.swing.JFrame {
         AS400IPAdresse = LogInDlg.jFormattedTextField1.getText();
         AS400User = LogInDlg.jTextField1.getText();
         AS400Passwort = new String(LogInDlg.jPasswordField1.getPassword());
+        if (AS400Passwort.length() > 0) {
+            myAS400 = new AS400();
 
-//        final WaitDialog waitDialog = new WaitDialog(new javax.swing.JFrame(), false);
-//        waitDialog.toFront();
-//        waitDialog.repaint();
-        myAS400 = new AS400();
+            myAS400.Connect(AS400IPAdresse, AS400User, AS400Passwort);
 
-        myAS400.Connect(AS400IPAdresse, AS400User, AS400Passwort);
+            SpeicherParametrer();
 
-        SpeicherParametrer();
+            StartSchema();
+        } else {
+            dispose();
+            System.exit(0);
 
-        StartSchema();
-
-//        waitDialog.dispose();
+        }
 
     }//GEN-LAST:event_formWindowOpened
 
@@ -808,10 +872,6 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField1KeyPressed
 
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        myAS400.druckeTabellenStrucktur(AS400Schemaname, AS400Tabellenname);
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
     }//GEN-LAST:event_jMenu1ActionPerformed
@@ -845,8 +905,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         AS400Schemaname = jTextField2.getText();
-        AS400Tabellenname = jTextField3.getText();
+        String lAS400Tabellenname = jTextField3.getText();
         findSchema(AS400Schemaname);
+        AS400Tabellenname = lAS400Tabellenname;
         findTable(AS400Tabellenname);        // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -861,8 +922,15 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jTextField3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyPressed
         if (evt.getKeyCode() == 10) {
-            AS400Tabellenname = jTextField3.getText();
-            findTable(AS400Tabellenname);          // TODO add your handling code here:
+            AS400Schemaname = jTextField2.getText();
+            String lAS400Tabellenname = jTextField3.getText();
+            findSchema(AS400Schemaname);
+            AS400Tabellenname = lAS400Tabellenname;
+            findTable(AS400Tabellenname);        // TODO add your handling code here:
+
+//            AS400Schemaname = jTextField2.getText();
+//            AS400Tabellenname = jTextField3.getText();
+//            findTable(AS400Tabellenname);          // TODO add your handling code here:
         }
     }//GEN-LAST:event_jTextField3KeyPressed
 
@@ -870,20 +938,6 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAddDataActionPerformed
 
-    private void btnAddDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddDataMouseClicked
-        int i = okcancel("Wollen einen Datensatz wirklich hinzfügen ?");
-        if (i == JOptionPane.YES_OPTION) {
-            DefaultTableModel tm = (DefaultTableModel) jTable3.getModel();
-            InsertDaten(tm);
-
-            String a = GetWhere(tm);
-            LadeTabellenDaten(AS400Tabellenname, a);
-            jTable3.setEnabled(true);
-        }
-        //jToggleButton1.doClick();
-
-// TODO add your handling code here:
-    }//GEN-LAST:event_btnAddDataMouseClicked
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         jTextField1.setText("");
@@ -914,6 +968,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void btnEditTabelleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditTabelleActionPerformed
+        btnEditTabelle.requestFocus();
         setEditModus();
     }//GEN-LAST:event_btnEditTabelleActionPerformed
 
@@ -931,36 +986,47 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
-    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu3MouseClicked
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        myAS400.druckeTabellenStrucktur(AS400Schemaname, AS400Tabellenname);
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
-    
- 
-                 
-         
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        myAS400.ExcelTabellenStrucktur(AS400Schemaname, AS400Tabellenname);
 
-
-    }//GEN-LAST:event_jMenu3ActionPerformed
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-String working_dir = System.getProperty("user.dir"); 
-  
-        
-         
-            String javaPath = System.getProperty("java.home");
-            //ProcessBuilder pb = new ProcessBuilder(javaPath + "\\bin\\java -jar C:\\Users\\jsrun.jar");
-            ProcessBuilder pb = new ProcessBuilder(new String[]{javaPath + "\\bin\\java ","-jar ","C:\\Daten\\Entwicklung\\Rossmann\\Java\\Projekte\\JAS400Browser\\dist\\lib\\tn5250j.jar",""});
-        try {
-            pb.start();
-            //Runtime.getRuntime().exec(new String[]{"java ","-jar ","C:\\Daten\\Entwicklung\\Rossmann\\Java\\Projekte\\JAS400Browser\\dist\\lib\\tn5250j.jar",""});
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            
-         
+        PrintMember mbr = new PrintMember(this, true, myAS400, AS400Schemaname, AS400Tabellenname);
+        mbr.setVisible(true);
+
+        myAS400.druckeMember(mbr.member);
+
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jMenueVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenueVersionActionPerformed
+
+
+    }//GEN-LAST:event_jMenueVersionActionPerformed
+
+    private void btnAddDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddDataMouseClicked
+
+        int i = okcancel("Wollen einen Datensatz wirklich hinzfügen ?");
+        if (i == JOptionPane.YES_OPTION) {
+            DefaultTableModel tm = (DefaultTableModel) jTable3.getModel();
+            InsertDaten(tm);
+
+            String a = GetWhere(tm);
+            LadeTabellenDaten(AS400Tabellenname, a);
+            jTable3.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnAddDataMouseClicked
+
+    private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+           LadeGrid(AS400Schemaname);        // TODO add your handling code here:        // TODO add your handling code here:
+        }
+    }//GEN-LAST:event_jTextField4KeyPressed
 
 //******************************************************************************
 //
@@ -1212,8 +1278,12 @@ String working_dir = System.getProperty("user.dir");
         LogInfo("Lade Bib = " + Schema);
         AS400Schemaname = Schema;
         DefaultTableModel lm;
-        lm = myAS400.getLibrary(Schema);
-
+        if (jTextField4.getText().length() > 0) {
+          lm = myAS400.getLibraryS(Schema,jTextField4.getText().toUpperCase());
+        } else{
+          lm = myAS400.getLibrary(Schema);
+        }
+  
         jTable1.setModel(lm);
         jTable1.setShowGrid(false);
         jTable1.setDefaultRenderer(Object.class, new MyRenderer(jTable1));
@@ -1241,19 +1311,20 @@ String working_dir = System.getProperty("user.dir");
         this.setCursor(Cursor.getDefaultCursor());
 
     }
-//******************************************************************************
-//
-//
-//
-//******************************************************************************
-
+    //**************************************************************************
+    //
+    //
+    //
+    //**************************************************************************
     private void LadeTabellenDaten(String TabellenName, String Filter) {
         initmyDataTable();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         AS400Tabellenname = TabellenName;
 
         DefaultTableModel lm;
-
+        
+        Integer Anz = myAS400.getTableDataAnz(AS400Schemaname, TabellenName,Filter);
+        jLabel2.setText("Anzahl Datensätze : "+Anz.toString());
         lm = myAS400.getTableData(AS400Schemaname, TabellenName, getFeldnamen(), Filter, jCheckBox1.isSelected());
         if (lm == null) {
             LogInfo(myAS400.error);
@@ -1298,6 +1369,8 @@ String working_dir = System.getProperty("user.dir");
 //        }
         //</editor-fold>
 
+        int Versionsnummer = 3;
+
         final SplashJFrame f1 = new SplashJFrame();
         f1.dispose();
         f1.setUndecorated(true);
@@ -1308,7 +1381,25 @@ String working_dir = System.getProperty("user.dir");
             @Override
             public void run() {
                 try {
-                    MainFrame frame = new MainFrame();
+                    String Version;
+                    try {
+                        Version = UpdateInfo.getLatestVersion();
+                        if (Integer.parseInt(Version) > Versionsnummer) {
+                            UpdateDialog UpdateDlg = new UpdateDialog(null, true);
+                            UpdateDlg.setVisible(true);
+                            if (UpdateDlg.Result == "J") {
+                                UpdateInfo.downloadFile();
+                                UpdateInfo.launch();
+                            }
+                            UpdateDlg.dispose();
+                        }
+
+                        String s = Version;
+                    } catch (Exception ex) {
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    MainFrame frame = new MainFrame(Versionsnummer);
                     frame.dispose();
 
                     Thread.sleep(3000);
@@ -1333,6 +1424,11 @@ String working_dir = System.getProperty("user.dir");
 //
 //******************************************************************************
 
+//******************************************************************************
+//
+//
+//
+//******************************************************************************
     private void DatenNeuLaden() {
         LadeTabellenDaten(AS400Tabellenname, jTextField1.getText());
     }
@@ -1521,7 +1617,7 @@ String working_dir = System.getProperty("user.dir");
         return UpdateString;
     }
 
-    //******************************************************************************
+//******************************************************************************
 //
 //
 //
@@ -1660,16 +1756,19 @@ String working_dir = System.getProperty("user.dir");
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JList jList1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenueVersion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -1690,6 +1789,7 @@ String working_dir = System.getProperty("user.dir");
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 
 }
